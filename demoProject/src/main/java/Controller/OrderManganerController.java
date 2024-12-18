@@ -37,9 +37,8 @@ public class OrderManganerController extends HttpServlet {
             page = Integer.parseInt(req.getParameter("page"));
         }
         int totalOddOrder = orderDAO.totalOddOrder("oddImageOrder");
-        int totalAlbumOrder = orderDAO.totalOddOrder("albumOrder");
         int totalCartOrder = orderDAO.totalOddOrder("cartOrder");
-        int max = Math.max(totalCartOrder, Math.max(totalOddOrder, totalAlbumOrder));
+        int max = Math.max(totalCartOrder, totalOddOrder);
         int totalPage = (int) Math.ceil((double) max / recSize);
         if (optionValue == null || "all".equals(optionValue)) {
             ArrayList<Order> orders = new ArrayList<>(orderDAO.getAllOrderOddImageForAdmin(page, recSize));

@@ -1,9 +1,9 @@
 package Controller;
 
-import DAO.BelongDAO;
-import DAO.ProductDAO;
-import DAO.TopicDAO;
+import DAO.*;
+import Model.Material;
 import Model.OddImage;
+import Model.Size;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "ProductForTopicController", value = "/pTopic")
 public class ProductForTopicController extends HttpServlet {
@@ -22,6 +23,8 @@ public class ProductForTopicController extends HttpServlet {
         TopicDAO topicDAO = new TopicDAO();
         BelongDAO belongDAO = new BelongDAO();
         ProductDAO productDAO = new ProductDAO();
+        MaterialDAO materialDAO = new MaterialDAO();
+        SizeDAO sizeDAO = new SizeDAO();
         String nameTopic = req.getParameter("q");
         String type = req.getParameter("type");
         String path = req.getServletPath();
@@ -39,6 +42,11 @@ public class ProductForTopicController extends HttpServlet {
         for (int id : listIdOdd) {
             listOdd.add(productDAO.getOddImageById(id));
         }
+
+        // Lấy danh sách kích cỡ và chất liệu
+        List<Material> materials = materialDAO.getAllMaterials();
+        List<Size> sizes = sizeDAO.getAllSizes();
+
         if ("odd".equals(type)) {
             req.setAttribute("listOddImage", listOdd);
             req.setAttribute("listTopic", topicDAO.getAllTopicsForClient());
@@ -47,11 +55,14 @@ public class ProductForTopicController extends HttpServlet {
         }
 
         req.setAttribute("listOddImage", listOdd);
+        req.setAttribute("materials", materials);
+        req.setAttribute("sizes", sizes);
         req.setAttribute("listTopic", topicDAO.getAllTopicsForClient());
         System.out.println("Line 65: " + page);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPage", totalPage);
         req.setAttribute("nameTopic", nameTopic);
+
         req.getRequestDispatcher("Topic.jsp").forward(req, resp);
     }
 }

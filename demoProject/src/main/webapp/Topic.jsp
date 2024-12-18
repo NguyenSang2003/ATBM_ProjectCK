@@ -1,14 +1,13 @@
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="Model.OddImage" %>
 <%@ page import="DAO.ProductDAO" %>
-<%@ page import="Model.User" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="Model.Topic" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="DAO.OrderDAO" %>
 <%@ page import="favourite.Favourite" %>
 <%@ page import="cart.Cart" %>
+<%@ page import="java.util.List" %>
+<%@ page import="Model.*" %>
 <!DOCTYPE html>
 <%--Dòng dưới để hiện lên theo charset UTF-8--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -75,7 +74,7 @@
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="./index" class="text-decoration-none">
-                <h1 class="logo">Nhóm 26</h1>
+                <h1 class="logo">Nhóm 63</h1>
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
@@ -134,7 +133,7 @@
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                 <a href="./index" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="logo">Nhóm 26</h1>
+                    <h1 class="logo">Nhóm 63</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
@@ -281,7 +280,7 @@
                         </div>
                     </div>
                 </div>
-                <%if (listOddImage.size() == 0 ) {%>
+                <%if (listOddImage.size() == 0) {%>
                 <div class="col-12  ">
                     <h1 class="d-flex align-items-center justify-content-center font-weight-semi-bold text-uppercase">
                         Chưa có sản phẩm nào</h1>
@@ -292,10 +291,7 @@
                 <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
                     <div class="card product-item border-0 mb-4">
                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid image-view"
-
-                                 src="<%=oddImage.getImage()%>"
-
+                            <img class="img-fluid image-view" src="<%=oddImage.getImage()%>"
                                  alt="<%=oddImage.getName()%>">
                         </div>
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
@@ -310,14 +306,42 @@
                                 </h6>
                             </div>
                         </div>
+
+                        <!-- Dropdown chọn kích cỡ -->
+                        <div class="form-group">
+                            <label for="sizeSelect_<%=oddImage.getIdOddImage()%>">Kích cỡ:</label>
+                            <select id="sizeSelect_<%=oddImage.getIdOddImage()%>" class="form-control">
+                                <% List<Size> sizes = (List<Size>) request.getAttribute("sizes"); %>
+                                <% for (Size size : sizes) { %>
+                                <option value="<%=size.getIdSize()%>">
+                                    <%=size.getNameSize()%> (<%=size.getWidth()%> x <%=size.getHeight()%>)
+                                </option>
+                                <% } %>
+                            </select>
+                        </div>
+
+                        <!-- Dropdown chọn chất liệu -->
+                        <div class="form-group">
+                            <label for="materialSelect_<%=oddImage.getIdOddImage()%>">Chất liệu:</label>
+                            <select id="materialSelect_<%=oddImage.getIdOddImage()%>" class="form-control">
+                                <% List<Material> materials = (List<Material>) request.getAttribute("materials"); %>
+                                <% for (Material material : materials) { %>
+                                <option value="<%=material.getIdMaterial()%>">
+                                    <%=material.getNameMaterial()%> - <%=material.getDescription()%>
+                                </option>
+                                <% } %>
+                            </select>
+                        </div>
+
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="./detail?type=odd&id=<%=oddImage.getIdOddImage()%>"
-                               class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>Xem
-                                chi tiết</a>
+                               class="btn btn-sm text-dark p-0">
+                                <i class="fas fa-eye text-primary mr-1"></i>Xem chi tiết
+                            </a>
                             <button title="<%=oddImage.getType()%>" value="<%=oddImage.getIdOddImage()%>"
-                                    class="btn btn-sm text-dark p-0 addCart"><i
-                                    class="fas fa-shopping-cart text-primary mr-1"></i>Thêm
-                                vào giỏ
+                                    class="btn btn-sm text-dark p-0 addCart"
+                                    onclick="addToCart('<%=oddImage.getIdOddImage()%>')">
+                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Thêm vào giỏ
                             </button>
                         </div>
                     </div>
@@ -359,15 +383,18 @@
 <!-- Shop End -->
 
 
-<!-- Footer chung cho các trang - Start -->
+<!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
+
+    <!-- Footer chung cho các trang -->
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
             <a href="" class="text-decoration-none">
-                <h1 class="logo" style="height: 60px; text-align: start; margin-top: -16px;">Nhóm 26</h1>
+                <h1 class="logo" style="height: 60px; text-align: start; margin-top: -16px;">Nhóm 63</h1>
             </a>
-            <p>Shop Nhóm 26 - Điểm đến đáng tin cậy cho các loại ảnh bản quyền, với sự đa dạng và phong phú trong
-                tất cả các thể loại. Khi bạn cần ảnh bản quyền. Hãy nhớ "Cần ảnh bản quyền đến với Shop Nhóm 26".
+            <p>Shop Nhóm 63 - Điểm đến đáng tin cậy cho các loại ảnh treo tường, poster, với sự đa dạng và phong phú
+                trong
+                tất cả các thể loại. Khi bạn cần ảnh treo tường. Hãy nhớ "Cần ảnh poster đến với Shop Nhóm 63".
             </p>
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>ĐH Nông Lâm HCM, Tp.Thủ Đức</p>
             <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>Model@gmail.com</p>
@@ -378,17 +405,17 @@
                 <div class="col-md-6 mb-5" style="padding-left: 70px;">
                     <h5 class="font-weight-bold text-dark mb-4">Di Chuyển Nhanh</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-dark mb-2" href="index.jsp"><i class="fa fa-angle-right mr-2"></i>Trang
+                        <a class="text-dark mb-2" href="index"><i class="fa fa-angle-right mr-2"></i>Trang
                             chủ</a>
-                        <a class="text-dark mb-2" href="shop.html"><i class="fa fa-angle-right mr-2"></i>Cửa
+                        <a class="text-dark mb-2" href="shop"><i class="fa fa-angle-right mr-2"></i>Của
                             hàng</a>
-                        <a class="text-dark mb-2" href="donhangcuaban.jsp"><i
+                        <a class="text-dark mb-2" href="donhangcuaban"><i
                                 class="fa fa-angle-right mr-2"></i>Đơn hàng của bạn</a>
-                        <a class="text-dark mb-2" href="cart.jsp"><i class="fa fa-angle-right mr-2"></i>Giỏ
+                        <a class="text-dark mb-2" href="cart"><i class="fa fa-angle-right mr-2"></i>Giỏ
                             hàng</a>
-                        <a class="text-dark mb-2" href="checkout.jsp"><i class="fa fa-angle-right mr-2"></i>Thanh
+                        <a class="text-dark mb-2" href="checkout"><i class="fa fa-angle-right mr-2"></i>Thanh
                             toán</a>
-                        <a class="text-dark" href="contact.jsp"><i class="fa fa-angle-right mr-2"></i>Liên hệ</a>
+                        <a class="text-dark" href="contact"><i class="fa fa-angle-right mr-2"></i>Liên hệ</a>
                     </div>
                 </div>
                 <div class="col-md-6 mb-5">
@@ -412,8 +439,10 @@
             </div>
         </div>
     </div>
+    <!-- Footer chung cho các trang -->
+
 </div>
-<!-- Footer chung cho các trang - End -->
+<!-- Footer End -->
 
 
 <!-- Back to Top -->
@@ -472,6 +501,37 @@
     })
 </script>
 <script src="./js/addCart.js"></script>
+<script>
+    function addToCart(productId) {
+        const sizeId = document.getElementById(`sizeSelect_${productId}`).value;
+        const materialId = document.getElementById(`materialSelect_${productId}`).value;
+
+        if (!sizeId || !materialId) {
+            alert('Vui lòng chọn kích cỡ và chất liệu.');
+            return;
+        }
+
+        fetch('./cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `type=odd&idProduct=${productId}&sizeId=${sizeId}&materialId=${materialId}`
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 200) {
+                    alert(data.message);
+                } else {
+                    alert('Thêm vào giỏ không thành công');
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert('Có lỗi xảy ra!');
+            });
+    }
+</script>
 </body>
 
 </html>

@@ -32,7 +32,7 @@
     <%--Dòng dưới để hiện lên theo charset UTF-8--%>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>Nhóm 26</title>
+    <title>Nhóm 63</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -71,7 +71,7 @@
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="index" class="text-decoration-none">
-                <h1 class="logo">Nhóm 26</h1>
+                <h1 class="logo">Nhóm 63</h1>
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
@@ -118,7 +118,7 @@
                     <p>Chưa có topic nào</p>
                     <%} else {%>
                     <%for (Topic topic : listTopic) {%>
-                    <a href="/topic?q=<%=topic.getName()%>" class="nav-item nav-link"><%=topic.getName()%>
+                    <a href="./pTopic?q=<%=topic.getName()%>" class="nav-item nav-link"><%=topic.getName()%>
                     </a>
                     <%}%>
                     <%}%>
@@ -128,7 +128,7 @@
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                 <a href="index" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="logo">Nhóm 26</h1>
+                    <h1 class="logo">Nhóm 63</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
@@ -278,15 +278,16 @@
                     <td class="align-middle">
                         <%=cartProduct.getMaterialName()%>
                         <br>
-                        <small class="text-muted">+ <%=vndFormat.format(cartProduct.getMaterialPrice())%> đ</small>
+                        <small class="text-muted">+ <%=vndFormat.format(cartProduct.getMaterialPrice())%>
+                        </small>
                     </td>
 
                     <td class="align-middle">
                         <%=cartProduct.getSizeName()%>
                         <br>
-                        <small class="text-muted">+ <%=vndFormat.format(cartProduct.getSizePrice())%> đ</small>
+                        <small class="text-muted">+ <%=vndFormat.format(cartProduct.getSizePrice())%>
+                        </small>
                     </td>
-
 
                     <td class="align-middle">
                         <div class="input-group quantity mx-auto"
@@ -441,10 +442,11 @@
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
             <a href="" class="text-decoration-none">
-                <h1 class="logo" style="height: 60px; text-align: start; margin-top: -16px;">Nhóm 26</h1>
+                <h1 class="logo" style="height: 60px; text-align: start; margin-top: -16px;">Nhóm 63</h1>
             </a>
-            <p>Shop Nhóm 26 - Điểm đến đáng tin cậy cho các loại ảnh bản quyền, với sự đa dạng và phong phú trong
-                tất cả các thể loại. Khi bạn cần ảnh bản quyền. Hãy nhớ "Cần ảnh bản quyền đến với Shop Nhóm 26".
+            <p>Shop Nhóm 63 - Điểm đến đáng tin cậy cho các loại ảnh treo tường, poster, với sự đa dạng và phong phú
+                trong
+                tất cả các thể loại. Khi bạn cần ảnh treo tường. Hãy nhớ "Cần ảnh poster đến với Shop Nhóm 63".
             </p>
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>ĐH Nông Lâm HCM, Tp.Thủ Đức</p>
             <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>Model@gmail.com</p>
@@ -455,17 +457,17 @@
                 <div class="col-md-6 mb-5" style="padding-left: 70px;">
                     <h5 class="font-weight-bold text-dark mb-4">Di Chuyển Nhanh</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-dark mb-2" href="index.jsp"><i class="fa fa-angle-right mr-2"></i>Trang
+                        <a class="text-dark mb-2" href="index"><i class="fa fa-angle-right mr-2"></i>Trang
                             chủ</a>
-                        <a class="text-dark mb-2" href="shop.jsp"><i class="fa fa-angle-right mr-2"></i>Của
+                        <a class="text-dark mb-2" href="shop"><i class="fa fa-angle-right mr-2"></i>Của
                             hàng</a>
-                        <a class="text-dark mb-2" href="donhangcuaban.jsp"><i
+                        <a class="text-dark mb-2" href="donhangcuaban"><i
                                 class="fa fa-angle-right mr-2"></i>Đơn hàng của bạn</a>
-                        <a class="text-dark mb-2" href="cart.html"><i class="fa fa-angle-right mr-2"></i>Giỏ
+                        <a class="text-dark mb-2" href="cart"><i class="fa fa-angle-right mr-2"></i>Giỏ
                             hàng</a>
-                        <a class="text-dark mb-2" href="checkout.jsp"><i class="fa fa-angle-right mr-2"></i>Thanh
+                        <a class="text-dark mb-2" href="checkout"><i class="fa fa-angle-right mr-2"></i>Thanh
                             toán</a>
-                        <a class="text-dark" href="contact.jsp"><i class="fa fa-angle-right mr-2"></i>Liên hệ</a>
+                        <a class="text-dark" href="contact"><i class="fa fa-angle-right mr-2"></i>Liên hệ</a>
                     </div>
                 </div>
                 <div class="col-md-6 mb-5">
