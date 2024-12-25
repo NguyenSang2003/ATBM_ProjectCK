@@ -6,6 +6,7 @@
 <%@ page import="java.text.DecimalFormat" %>
 <%@ page import="cart.Cart" %>
 <%@ page import="favourite.Favourite" %>
+<%@ page import="DAO.OrderDAO" %>
 <!DOCTYPE html>
 <%--Dòng dưới để hiện lên theo charset UTF-8--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -61,6 +62,7 @@
     if (cart == null) cart = new Cart();
     if (favourite == null) favourite = new Favourite();
 %>
+
 <!-- Start - Phần dùng chung cho các trang dành cho user -->
 <!-- Topbar Start -->
 <div class="container-fluid">
@@ -194,6 +196,25 @@
 </div>
 <!-- Page Header End -->
 
+<%-- Đảm bảo lấy idOrder từ URL và lưu thông tin vào session --%>
+<%
+    // Lấy idOrder từ URL
+    String idOrderStr = request.getParameter("idOrder");
+    if (idOrderStr != null) {
+        int idOrder = Integer.parseInt(idOrderStr);
+
+        // Tạo đối tượng DAO để lấy chi tiết đơn hàng
+        OrderDAO orderDAO = new OrderDAO();
+        String orderDetails = orderDAO.getOrderDetailsById(idOrder);
+
+        // Lưu vào session hoặc truyền trực tiếp đến JSP
+        session.setAttribute("orderSummary", orderDetails);
+        session.setAttribute("orderId", idOrder);  // Lưu idOrder vào session để dùng cho xác thực chữ ký
+    } else {
+        System.out.println("Không tìm thấy idOrder.");
+    }
+%>
+
 <!-- Đơn hàng của bạn Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
@@ -201,6 +222,7 @@
             <table class="table table-bordered text-center mb-0">
                 <thead class="bg-secondary text-dark">
                 <tr>
+                    <th>Hành Động Khác</th>
                     <th>Mã đơn hàng</th>
                     <th>Tên đơn hàng</th>
                     <th>Số lượng</th>
@@ -216,53 +238,66 @@
                 </tr>
                 </thead>
                 <tbody class="align-middle">
-                <%if (listOrder.size() == 0) {%>
-
-                <%} else {%>
-                <%for (Order order : listOrder) {%>
+                <% if (listOrder.size() == 0) { %>
                 <tr>
-                    <td class="align-middle"><%= order.getIdOrder()%>
+                    <td colspan="12">Không có đơn hàng nào.</td>
+                </tr>
+                <% } else { %>
+                <% for (Order order : listOrder) { %>
+                <tr>
+                    <td>
+                        <form method="GET" action="order-summary.jsp">
+                            <input type="hidden" name="idOrder" value="<%= order.getIdOrder() %>">
+                            <button type="submit" class="btn" title="Xem chi tiết">
+                                <i class="fas fa-eye text-primary"></i>
+                            </button>
+                        </form>
+
+                        <!-- Nút nạp chữ ký -->
+                        <form method="GET" action="addSignature.jsp">
+                            <input type="hidden" name="idOrder" value="<%= order.getIdOrder() %>">
+                            <button type="submit" class="btn" title="Nạp chữ ký">
+                                <i class="fas fa-key text-primary"></i>
+                            </button>
+                        </form>
                     </td>
-                    <td class="align-middle"><a
-                        <%
-                            String href = "cart".equals(order.getType()) ? "./cart" : ("./detail?type=" + order.getType() + "&id=" + order.getIdProduct());
-                        %>
-                        <a href="<%=href%>"><%= order.getNameProduct()%>
-                        </a></td>
-                    <td class="align-middle"><%= order.getQuantity()%>
+                    <td class="align-middle"><%= order.getIdOrder() %>
+                    </td>
+                    <td class="align-middle">
+                        <a href="<%= "cart".equals(order.getType()) ? "./cart" : ("./detail?type=" + order.getType() + "&id=" + order.getIdProduct()) %>">
+                            <%= order.getNameProduct() %>
+                        </a>
+                    </td>
+                    <td class="align-middle"><%= order.getQuantity() %>
                     </td>
                     <td class="align-middle"><%= order.getNameMaterial() %>
                     </td>
                     <td class="align-middle"><%= order.getNameSize() %>
                     </td>
-                    <td class="align-middle"><%= order.getReceiver()%>
+                    <td class="align-middle"><%= order.getReceiver() %>
                     </td>
-                    <td class="align-middle"><%= order.getPhoneNumber()%>
+                    <td class="align-middle"><%= order.getPhoneNumber() %>
                     </td>
-                    <td class="align-middle">
-                        <%= order.getPurchareDate()%>
+                    <td class="align-middle"><%= order.getPurchareDate() %>
                     </td>
-                    <td class="align-middle">
-                        <%= order.getStatus()%>
+                    <td class="align-middle"><%= order.getStatus() %>
                     </td>
-                    <td class="align-middle td-address" title="<%= order.getAddress()%>"><%= order.getAddress()%>
+                    <td class="align-middle td-address" title="<%= order.getAddress() %>"><%= order.getAddress() %>
                     </td>
-                    <td><%=vndFormat.format(order.getTotalPrice())%>
+                    <td class="align-middle"><%= vndFormat.format(order.getTotalPrice()) %>
                     </td>
                     <td class="align-middle">
-                        <button data-id="<%=order.getIdOrder()%>" value="<%=order.getType()%>" data-toggle="modal"
-                                data-target="#deleteOrder" class="btn btn-sm btn-primary"><i
-                                class="fa fa-times"></i></button>
+                        <button data-id="<%= order.getIdOrder() %>" value="<%= order.getType() %>" data-toggle="modal"
+                                data-target="#deleteOrder" class="btn btn-sm btn-primary">
+                            <i class="fa fa-times"></i>
+                        </button>
                     </td>
                 </tr>
-                <%}%>
-                <%}%>
-
-
+                <% } %>
+                <% } %>
                 </tbody>
             </table>
         </div>
-
     </div>
 </div>
 <!-- Đơn hàng của bạn End -->

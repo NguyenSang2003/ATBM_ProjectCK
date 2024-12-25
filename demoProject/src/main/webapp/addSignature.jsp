@@ -11,7 +11,7 @@
     <%--Dòng dưới để hiện lên theo charset UTF-8--%>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>Chi tiết đơn hàng</title>
+    <title>Nạp ký điện tử</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -63,7 +63,6 @@
 
         // Lưu vào session hoặc truyền trực tiếp đến JSP
         session.setAttribute("orderSummary", orderDetails);
-        session.setAttribute("orderId", idOrder);  // Lưu idOrder vào session để dùng cho xác thực chữ ký
     } else {
         System.out.println("Không tìm thấy idOrder.");
     }
@@ -188,39 +187,66 @@
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">Chi Tiết Đơn Hàng</h1>
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Nạp chữ ký điện tử</h1>
         <div class="d-inline-flex">
             <p class="m-0"><a href="index">Trang Chủ</a></p>
             <p class="m-0 px-2">-</p>
-            <p class="m-0">Giỏ Hàng</p>
+            <p class="m-0">Nạp chữ ký điện tử</p>
         </div>
     </div>
 </div>
 <!-- Page Header End -->
 
+<%-- Bắt đầu nội dung chữ ký --%>
 <div class="container-fluid pt-5">
-    <div class="text-center mb-4">
-    </div>
     <div class="row px-xl-5">
         <div class="col-lg-12 mb-5">
             <div class="order-details">
                 <%
+                    String result = (String) request.getAttribute("verificationResult");
+                    if (result != null) {
+                %>
+                <div class="alert alert-info">
+                    <h4 class="font-weight-bold">Kết quả xác minh chữ ký:</h4>
+                    <p><%= result %>
+                    </p>
+                </div>
+                <%
+                    }
+                %>
+                <%
+                    // Kiểm tra xem session có tồn tại dữ liệu orderSummary không
                     String orderSummary = (String) session.getAttribute("orderSummary");
                     if (orderSummary == null) {
                         response.sendRedirect("/checkout.jsp?error=no_order");
+                        return;
+                    }
+
+                    // Lấy idOrder từ session
+                    Integer orderId = (Integer) session.getAttribute("orderId");
+                    if (orderId == null) {
+                        response.sendRedirect("donhangcuaban.jsp?error=missing_order_id");
                         return;
                     }
                 %>
                 <h4 class="font-weight-bold">Thông tin đơn hàng:</h4>
                 <pre><%= orderSummary %></pre>
 
-                <form method="POST" action="/demoProject_war/download-order">
-                    <button type="submit" class="btn btn-primary py-2 px-4">Tải Xuống Đơn Hàng</button>
+                <!-- Form tải lên chữ ký -->
+                <form method="POST" action="/demoProject_war/SignatureVerificationController">
+                    <div class="form-group">
+                        <label for="signature">Chữ ký điện tử:</label>
+                        <textarea name="signature" id="signature" rows="4" class="form-control" required></textarea>
+                    </div>
+                    <input type="hidden" name="idOrder" value="<%= orderId %>">
+                    <button type="submit" class="btn btn-primary py-2 px-4">Tải lên chữ ký</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<%-- Kết thúc nội dung chữ ký --%>
+
 
 <!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">

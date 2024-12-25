@@ -210,7 +210,7 @@
     <div class="row" style="display: flex; justify-content: center; margin-bottom: 20px">
         <!-- Buttons Section -->
         <div class="col-md-4 d-flex flex-column align-items-start">
-            <button class="btn btn-secondary mb-2" onclick="generateKeyPair()">Tạo key</button>
+            <button class="btn btn-secondary mb-2" onclick="generateKeyPair()">Tạo key DSA</button>
             <button class="btn btn-secondary mb-2" onclick="loadKey()">Tải key</button>
         </div>
 
@@ -246,7 +246,7 @@
                      style="word-wrap: break-word; white-space: pre-wrap; background-color: white; padding: 10px; border: 1px solid #ccc; border-radius: 5px; height: 150px; overflow-y: auto;">
                     <!-- Public key content will be shown here -->
                 </div>
-                <%--                <button class="btn btn-secondary mt-2" onclick="saveKeyPublicKey()">Lưu key</button>--%>
+                <button class="btn btn-secondary mt-2" onclick="savePublicKey()">Lưu Public Key</button>
                 <h5 style="margin-top: 10px; font-weight: bold">Public key đã được cập nhật xuống database tự động</h5>
             </div>
         </div>
@@ -261,7 +261,7 @@
                 </div>
                 <h5 style="margin-top: 10px; color: red; font-weight: bold">Hãy lưu xuống vì bạn sẽ không thấy nó lần
                     nữa tại đây.</h5>
-                <button class="btn btn-secondary mt-2" onclick="saveKey()">Lưu key</button>
+                <button class="btn btn-secondary mt-2" onclick="savePrivateKey()">Lưu Private Key</button>
             </div>
         </div>
     </div>
@@ -312,9 +312,28 @@
 
 </script>
 
+
 <script>
-    // Lưu PrivateKey xuống local
-    function saveKey() {
+    // function generateKeyPair() {
+    //     if (isGeneratingKey) return; // Ngăn chặn việc gọi API nhiều lần
+    //     isGeneratingKey = true;
+    //
+    //     axios.post('/generateKey')  // Gọi API tạo cặp khóa DSA
+    //         .then(response => {
+    //             const [privateKey, publicKey] = response.data.split(';'); // Tách chuỗi trả về thành PrivateKey và PublicKey
+    //             document.getElementById('privateKey').innerText = privateKey;
+    //             document.getElementById('publicKey').innerText = publicKey;
+    //         })
+    //         .catch(error => {
+    //             alert("Error generating keys: " + error.message);
+    //         })
+    //         .finally(() => {
+    //             isGeneratingKey = false; // Reset trạng thái sau khi xử lý xong
+    //         });
+    // }
+
+    // Lưu PrivateKey xuống local với định dạng PEM
+    function savePrivateKey() {
         const privateKeyElement = document.getElementById('privateKey');
         const privateKey = privateKeyElement.innerText.trim();
 
@@ -323,51 +342,67 @@
             return;
         }
 
-        const fileName = prompt("Nhập tên file để lưu PrivateKey:", "private_key.txt");
+        const fileName = prompt("Nhập tên file để lưu PrivateKey:", "DSA_privateKey.txt");
         if (fileName) {
-            const blob = new Blob([privateKey], {type: 'text/plain'});
-            const url = URL.createObjectURL(blob);
+            const blob = new Blob([`-----BEGIN PRIVATE KEY-----\n${privateKey}\n-----END PRIVATE KEY-----\n`], {type: "text/plain"});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+        }
+    }
 
-            // Tạo thẻ a để tải file
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            a.click();
+    // Lưu PublicKey xuống local với định dạng PEM
+    function savePublicKey() {
+        const publicKeyElement = document.getElementById('publicKey');
+        const publicKey = publicKeyElement.innerText.trim();
 
-            // Giải phóng URL sau khi tải xong
-            URL.revokeObjectURL(url);
+        if (!publicKey) {
+            alert("No PublicKey found to save.");
+            return;
+        }
 
-            // Xóa private key khỏi giao diện sau khi lưu
-            privateKeyElement.innerText = "";
+        const fileName = prompt("Nhập tên file để lưu PublicKey:", "DSA_publicKey.txt");
+        if (fileName) {
+            const blob = new Blob([`-----BEGIN PUBLIC KEY-----\n${publicKey}\n-----END PUBLIC KEY-----\n`], {type: "text/plain"});
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
         }
     }
 </script>
 
+
 <%--<script>--%>
-<%--    let isGeneratingKey = false;--%>
+<%--    // Lưu PrivateKey xuống local--%>
+<%--    function saveKey() {--%>
+<%--        const privateKeyElement = document.getElementById('privateKey');--%>
+<%--        const privateKey = privateKeyElement.innerText.trim();--%>
 
-<%--    function generateKeyPair() {--%>
-<%--        if (isGeneratingKey) return; // Ngăn chặn việc gọi API nhiều lần--%>
-<%--        isGeneratingKey = true;--%>
+<%--        if (!privateKey) {--%>
+<%--            alert("No PrivateKey found to save.");--%>
+<%--            return;--%>
+<%--        }--%>
 
-<%--        axios.post('generateKey')--%>
-<%--            .then(response => {--%>
-<%--                const privateKeyAndPublicKey = response.data;--%>
-<%--                const keys = privateKeyAndPublicKey.split(';');--%>
-<%--                const privateKey = keys[0];--%>
-<%--                const publicKey = keys[1];--%>
+<%--        const fileName = prompt("Nhập tên file để lưu PrivateKey:", "DSA_private_key.txt");--%>
+<%--        if (fileName) {--%>
+<%--            const blob = new Blob([privateKey], {type: 'text/plain'});--%>
+<%--            const url = URL.createObjectURL(blob);--%>
 
-<%--                document.getElementById('privateKey').innerText = privateKey;--%>
-<%--                document.getElementById('publicKey').innerText = publicKey;--%>
-<%--            })--%>
-<%--            .catch(error => {--%>
-<%--                alert("Error generating keys: " + error.message);--%>
-<%--            })--%>
-<%--            .finally(() => {--%>
-<%--                isGeneratingKey = false; // Reset trạng thái sau khi xử lý xong--%>
-<%--            });--%>
+<%--            // Tạo thẻ a để tải file--%>
+<%--            const a = document.createElement('a');--%>
+<%--            a.href = url;--%>
+<%--            a.download = fileName;--%>
+<%--            a.click();--%>
+
+<%--            // Giải phóng URL sau khi tải xong--%>
+<%--            URL.revokeObjectURL(url);--%>
+
+<%--            // Xóa private key khỏi giao diện sau khi lưu--%>
+<%--            privateKeyElement.innerText = "";--%>
+<%--        }--%>
 <%--    }--%>
-
 <%--</script>--%>
 
 
@@ -393,8 +428,8 @@
                 isGeneratingKey = false; // Reset trạng thái sau khi xử lý xong
             });
     }
-
 </script>
+
 <!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
     <!-- Footer chung cho các trang -->

@@ -84,8 +84,7 @@
             </form>
         </div>
         <div class="col-lg-3 col-6 text-right">
-            <%-- btn : showKeyList() --%>
-            <a href="./userkeys-management" class="btn border">
+            <a href="./generateKey" class="btn border">
                 <i class="fas fa-key text-primary"></i>
                 <span class="badge"></span>
             </a>
@@ -201,190 +200,118 @@
 <!-- Page Header End -->
 
 <!-- Checkout Start -->
-<div class="container-fluid pt-5">
-    <div class="row px-xl-5">
-        <div class="col-lg-8">
+<div class="container-fluid pt-5" style="display: flex; justify-content: center">
+    <div class="row">
+        <div class="card border-secondary mb-5" style="width: 315px">
+            <div class="card-header bg-secondary border-0">
+                <h4 class="font-weight-semi-bold m-0">Tổng Đơn Hàng</h4>
+            </div>
+            <div class="card-body">
+                <h5 class="font-weight-medium mb-3">Các Sản Phẩm</h5>
 
-        </div>
-        <div class="col-lg-4">
+                <%
+                    String name = null, type = null, image = null, materialName = null, sizeName = null;
+                    int id = 0, price = 0, discount = 0, quantity = 0, idMaterial = 0, idSize = 0;
+                %>
 
-            <%--                        <!-- Mã mới có Js -->--%>
-            <%--                        <div class="card border-secondary mb-5">--%>
-            <%--                            <div class="card-header bg-secondary border-0">--%>
-            <%--                                <h4 class="font-weight-semi-bold m-0">Tổng Đơn Hàng</h4>--%>
-            <%--                            </div>--%>
-            <%--                            <div class="card-body">--%>
-            <%--                                <h5 class="font-weight-medium mb-3">Các Sản Phẩm</h5>--%>
-            <%--                                <%--%>
-            <%--                                    String name = null, type = null, image = null;--%>
-            <%--                                    int id = 0, price = 0, discount = 0, quantity = 0, idMaterial = 0, idSize = 0;--%>
-            <%--                                %>--%>
-            <%--                                <% for (Map.Entry<String, CartProduct> entry : cart.getData().entrySet()) {--%>
-            <%--                                    CartProduct cartProduct = entry.getValue();--%>
-            <%--                                    quantity = cartProduct.getQuantity();--%>
-            <%--                                    if (cartProduct.getObject() instanceof OddImage) {--%>
-            <%--                                        id = ((OddImage) cartProduct.getObject()).getIdOddImage();--%>
-            <%--                                        price = ((OddImage) cartProduct.getObject()).getPrice();--%>
-            <%--                                        discount = ((OddImage) cartProduct.getObject()).getDiscount();--%>
-            <%--                                        name = ((OddImage) cartProduct.getObject()).getName();--%>
-            <%--                                        type = ((OddImage) cartProduct.getObject()).getType();--%>
-            <%--                                        image = ((OddImage) cartProduct.getObject()).getImage();--%>
-            <%--                                        idMaterial = ((OddImage) cartProduct.getObject()).getIdMaterial();--%>
-            <%--                                        idSize = ((OddImage) cartProduct.getObject()).getIdSize();--%>
-            <%--                                    }--%>
-            <%--                                %>--%>
+                <% for (Map.Entry<String, CartProduct> entry : cart.getData().entrySet()) {
+                    CartProduct cartProduct = entry.getValue();
+                    quantity = cartProduct.getQuantity();
 
-            <%--                                <div class="d-flex justify-content-between">--%>
-            <%--                                    <p id="product">--%>
-            <%--                                        <input type="checkbox" checked>--%>
-            <%--                                        <a class="ml-1" href="./detail?type=<%=type%>&id=<%=id%>"><%=name%>--%>
-            <%--                                        </a> x <%=quantity%>--%>
+                    if (cartProduct.getObject() instanceof OddImage) {
+                        id = ((OddImage) cartProduct.getObject()).getIdOddImage();
+                        price = ((OddImage) cartProduct.getObject()).getPrice();
+                        discount = ((OddImage) cartProduct.getObject()).getDiscount();
+                        name = ((OddImage) cartProduct.getObject()).getName();
+                        type = ((OddImage) cartProduct.getObject()).getType();
+                        image = ((OddImage) cartProduct.getObject()).getImage();
+                        idMaterial = cartProduct.getMaterialId();
+                        idSize = cartProduct.getSizeId();
+                        materialName = cartProduct.getMaterialName(); // Lấy tên chất liệu
+                        sizeName = cartProduct.getSizeName(); // Lấy tên kích cỡ
+                    }
+                %>
 
-            <%--                                    </p>--%>
-            <%--                                    <p id="price"><%=vndFormat.format((price - discount) * quantity)%>--%>
-            <%--                                    </p>--%>
-            <%--                                    &lt;%&ndash; Hidden inputs for idMaterial and idSize &ndash;%&gt;--%>
-            <%--                                    <input type="hidden" name="products[<%=id%>][idMaterial]"--%>
-            <%--                                           value="<%=idMaterial%>">--%>
-            <%--                                    <input type="hidden" name="products[<%=id%>][idSize]" value="<%=idSize%>">--%>
-            <%--                                    <input type="hidden" name="products[<%=id%>][quantity]"--%>
-            <%--                                           value="<%=quantity%>">--%>
-            <%--                                </div>--%>
+                <div class="d-flex justify-content-between">
+                    <p id="product">
+                        <input type="checkbox" checked>
+                        <a class="ml-1" href="./detail?type=<%=type%>&id=<%=id%>"><%=name%>
+                        </a> x <%=quantity%>
+                        <br>
+                        <strong>Chất liệu:</strong> <%= materialName %>
+                        <br>
+                        <strong>Kích cỡ:</strong> <%= sizeName %>
 
-            <%--                                <%}%>--%>
-            <%--                                <hr class="mt-0">--%>
-            <%--                                <div class="d-flex justify-content-between mb-3 pt-1">--%>
-            <%--                                    <h6 class="font-weight-medium">Tổng Tiền Chưa Ship</h6>--%>
-            <%--                                    <h6 class="font-weight-medium" id="subtotal"><%=vndFormat.format(cart.totalPrice())%>--%>
-            <%--                                    </h6>--%>
-            <%--                                </div>--%>
-            <%--                                <div class="d-flex justify-content-between">--%>
-            <%--                                    <h6 class="font-weight-medium">Giá Vận Chuyển</h6>--%>
-            <%--                                    <h6 class="font-weight-medium" id="shippingFee">30.000 VNĐ</h6>--%>
-            <%--                                </div>--%>
-            <%--                            </div>--%>
-            <%--                            <div class="card-footer border-secondary bg-transparent">--%>
-            <%--                                <div class="d-flex justify-content-between mt-2">--%>
-            <%--                                    <h5 class="font-weight-bold">Tổng Cộng</h5>--%>
-            <%--                                    <h5 class="font-weight-bold" id="total"><%=vndFormat.format(cart.totalPrice() + 30000)%>--%>
-            <%--                                    </h5>--%>
-            <%--                                </div>--%>
-            <%--                            </div>--%>
-            <%--                        </div>--%>
+                        <%--                        <small><strong>id Chất liệu:</strong> <%= idMaterial %>--%>
+                        <%--                        </small><br>--%>
+                        <%--                        <small><strong>id Kích cỡ:</strong> <%= idSize %>--%>
+                        <%--                        </small>--%>
+                    </p>
+                    <p id="price"><%=vndFormat.format((price - discount) * quantity)%>
+                    </p>
 
-            <div class="card border-secondary mb-5">
-                <div class="card-header bg-secondary border-0">
-                    <h4 class="font-weight-semi-bold m-0">Tổng Đơn Hàng</h4>
+                    <%-- Hidden inputs for idMaterial and idSize --%>
+                    <input type="hidden" name="products[<%=id%>][idMaterial]" value="<%=idMaterial%>">
+                    <input type="hidden" name="products[<%=id%>][idSize]" value="<%=idSize%>">
+                    <input type="hidden" name="products[<%=id%>][quantity]" value="<%=quantity%>">
+
                 </div>
-                <div class="card-body">
-                    <h5 class="font-weight-medium mb-3">Các Sản Phẩm</h5>
 
-                    <%
-                        String name = null, type = null, image = null, materialName = null, sizeName = null;
-                        int id = 0, price = 0, discount = 0, quantity = 0, idMaterial = 0, idSize = 0;
-                    %>
+                <%}%>
 
-                    <% for (Map.Entry<String, CartProduct> entry : cart.getData().entrySet()) {
-                        CartProduct cartProduct = entry.getValue();
-                        quantity = cartProduct.getQuantity();
-
-                        if (cartProduct.getObject() instanceof OddImage) {
-                            id = ((OddImage) cartProduct.getObject()).getIdOddImage();
-                            price = ((OddImage) cartProduct.getObject()).getPrice();
-                            discount = ((OddImage) cartProduct.getObject()).getDiscount();
-                            name = ((OddImage) cartProduct.getObject()).getName();
-                            type = ((OddImage) cartProduct.getObject()).getType();
-                            image = ((OddImage) cartProduct.getObject()).getImage();
-                            idMaterial = cartProduct.getMaterialId();
-                            idSize = cartProduct.getSizeId();
-                            materialName = cartProduct.getMaterialName(); // Lấy tên chất liệu
-                            sizeName = cartProduct.getSizeName(); // Lấy tên kích cỡ
-                        }
-                    %>
-
-                    <div class="d-flex justify-content-between">
-                        <p id="product">
-                            <input type="checkbox" checked>
-                            <a class="ml-1" href="./detail?type=<%=type%>&id=<%=id%>"><%=name%>
-                            </a> x <%=quantity%>
-                            <br>
-                            <small><strong>Chất liệu:</strong> <%= materialName %>
-                            </small><br>
-                            <small><strong>Kích cỡ:</strong> <%= sizeName %>
-                            </small>
-                            <small><strong>id Chất liệu:</strong> <%= idMaterial %>
-                            </small><br>
-                            <small><strong>id Kích cỡ:</strong> <%= idSize %>
-                            </small>
-                        </p>
-                        <p id="price"><%=vndFormat.format((price - discount) * quantity)%>
-                        </p>
-
-                        <%-- Hidden inputs for idMaterial and idSize --%>
-                        <input type="hidden" name="products[<%=id%>][idMaterial]" value="<%=idMaterial%>">
-                        <input type="hidden" name="products[<%=id%>][idSize]" value="<%=idSize%>">
-                        <input type="hidden" name="products[<%=id%>][quantity]" value="<%=quantity%>">
-
-                    </div>
-
-                    <%}%>
-
-                    <hr class="mt-0">
-                    <div class="d-flex justify-content-between mb-3 pt-1">
-                        <h6 class="font-weight-medium">Tổng Tiền Chưa Ship</h6>
-                        <h6 class="font-weight-medium" id="subtotal"><%=vndFormat.format(cart.totalPrice())%>
-                        </h6>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Giá Vận Chuyển</h6>
-                        <h6 class="font-weight-medium" id="shippingFee">30.000 VNĐ</h6>
-                    </div>
+                <hr class="mt-0">
+                <div class="d-flex justify-content-between mb-3 pt-1">
+                    <h6 class="font-weight-medium">Tổng Tiền Chưa Ship</h6>
+                    <h6 class="font-weight-medium" id="subtotal"><%=vndFormat.format(cart.totalPrice())%>
+                    </h6>
                 </div>
-                <div class="card-footer border-secondary bg-transparent">
-                    <div class="d-flex justify-content-between mt-2">
-                        <h5 class="font-weight-bold">Tổng Cộng</h5>
-                        <h5 class="font-weight-bold" id="total"><%=vndFormat.format(cart.totalPrice() + 30000)%>
-                        </h5>
-                    </div>
+                <div class="d-flex justify-content-between">
+                    <h6 class="font-weight-medium">Giá Vận Chuyển</h6>
+                    <h6 class="font-weight-medium" id="shippingFee">30.000 VNĐ</h6>
                 </div>
             </div>
-
-
-            <div class="card border-secondary mb-5">
-                <div class="card-header bg-secondary border-0">
-                    <h4 class="font-weight-semi-bold m-0">Phương Thức Trả</h4>
+            <div class="card-footer border-secondary bg-transparent">
+                <div class="d-flex justify-content-between mt-2">
+                    <h5 class="font-weight-bold">Tổng Cộng</h5>
+                    <h5 class="font-weight-bold" id="total"><%=vndFormat.format(cart.totalPrice() + 30000)%>
+                    </h5>
                 </div>
-                <div class="card-body">
+            </div>
+        </div>
+
+        <div class="card border-secondary mb-5" style="width: 400px; margin-left: 20px">
+            <div class="card-header bg-secondary border-0">
+                <h4 class="font-weight-semi-bold m-0">Điền thông tin đơn hàng</h4>
+            </div>
+            <div class="card-footer border-secondary bg-transparent">
+                <form action="/demoProject_war/checkout" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input" name="payment" id="directcheck">
-                            <label class="custom-control-label" for="directcheck">Trả Khi Nhận Hàng</label>
-                        </div>
+                        <label for="receiver">Người nhận:</label>
+                        <input type="text" class="form-control" id="receiver" name="receiver" required>
                     </div>
-                </div>
-                <div class="card-footer border-secondary bg-transparent">
-                    <%-- mới 2 --%>
-                    <form action="/demoProject_war/checkout" method="post">
-                        <div class="form-group">
-                            <label for="receiver">Người nhận:</label>
-                            <input type="text" class="form-control" id="receiver" name="receiver" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phoneNumber">Số điện thoại:</label>
-                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="address">Địa chỉ:</label>
-                            <textarea class="form-control" id="address" name="address" required></textarea>
-                        </div>
-                        <div class="text-right">
-                            <button type="submit" class="btn btn-success">Xác Nhận Đặt Hàng</button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Số điện thoại:</label>
+                        <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Địa chỉ:</label>
+                        <textarea class="form-control" id="address" name="address" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publicKey">Chọn file publicKey (publickey.txt):</label>
+                        <input type="file" class="form-control" id="publicKey" name="publicKey" accept=".txt" required>
+                    </div>
+
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-success">Xác Nhận Đặt Hàng</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
+    <%--    </div>--%>
 </div>
 <!-- Checkout End -->
 
