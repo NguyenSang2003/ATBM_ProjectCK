@@ -16,7 +16,7 @@
 <% String err = (String) request.getAttribute("err") == null ? "" : (String) request.getAttribute("err");%>
 <div class="inner">
     <a href="./index" class="text-decoration-none">
-        <h1 class="logo">Nhóm 26</h1>
+        <h1 class="logo">Nhóm 63</h1>
     </a>
     <h3 class="title">Đăng nhập</h3>
     <p style="text-align: center; color: red; font-weight: bold;"><%=err%>

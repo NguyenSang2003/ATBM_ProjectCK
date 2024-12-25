@@ -16,7 +16,7 @@
     String err = request.getAttribute("err") == null ? "" : (String) request.getAttribute("err");
 %>
 <div class="inner-verify">
-    <h1 class="logo">Nhóm 26</h1>
+    <h1 class="logo">Nhóm 63</h1>
     <h3 class="title">Xác thực Email của bạn</h3>
     <div class="code">
         <p class="code-content">
