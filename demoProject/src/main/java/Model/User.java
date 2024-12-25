@@ -14,7 +14,9 @@ public class User {
 
     Date createdAt;
 
-    public User(){
+    String publicKey;
+
+    public User() {
     }
 
     public int getId() {
@@ -81,10 +83,33 @@ public class User {
         this.createdAt = createdAt;
     }
 
+    public String getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(String publicKey) {
+        this.publicKey = publicKey;
+    }
+
+//    @Override
+//    public String toString() {
+//        return "nhom26.User{" + "email='" + email + '\'' + ", username='" + username + '\'' + ", pasword='" + pasword + '\'' + ", isVerifyEmail=" + isVerifyEmail + ", isActive=" + isActive + ", isAdmin=" + isAdmin + ", createdAt=" + createdAt + '}';
+//    }
+
     @Override
     public String toString() {
-        return "nhom26.User{" + "email='" + email + '\'' + ", username='" + username + '\'' + ", pasword='" + pasword + '\'' + ", isVerifyEmail=" + isVerifyEmail + ", isActive=" + isActive + ", isAdmin=" + isAdmin + ", createdAt=" + createdAt + '}';
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", isVerifyEmail=" + isVerifyEmail +
+                ", isActive=" + isActive +
+                ", isAdmin=" + isAdmin +
+                ", createdAt=" + createdAt +
+                ", publicKey='" + publicKey + '\'' +
+                '}';
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

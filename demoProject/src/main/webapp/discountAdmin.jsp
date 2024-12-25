@@ -61,7 +61,7 @@
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
             <a href="./index" class="text-decoration-none">
-                <h1 class="logo">Nhóm 26</h1>
+                <h1 class="logo">Nhóm 63</h1>
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
@@ -78,15 +78,15 @@
         </div>
         <div class="col-lg-3 col-6 text-right">
             <a href="./topic" class="btn border">
-                <i class="fa-solid fa-boxes-stacked text-primary"></i>
+                <i class="fa-solid fa-boxes-stacked text-primary" title="Quản lí chủ đề"></i>
             </a>
-            <a href="./order" class="btn border">
-                <i class="fas fa-shopping-cart text-primary"></i>
+            <a href="./orderManager" class="btn border">
+                <i class="fas fa-shopping-cart text-primary" title="Quản lí đơn hàng"></i>
             </a>
             <a href="./user" class="btn border">
-                <i class="fa-regular fa-user text-primary"></i>
+                <i class="fa-regular fa-user text-primary" title="Quản lí người dùng"></i>
             </a>
-            <a href="./product" class="btn border">
+            <a href="./product" class="btn border" title="Quản lí sản phẩm">
                 <i class="fa-brands fa-product-hunt text-primary"></i>
             </a>
             <a href="./discountAdmin" class="btn border" title="Quản lí mã giảm giá">
@@ -96,7 +96,6 @@
     </div>
 </div>
 <!-- Topbar End -->
-
 
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
@@ -121,7 +120,6 @@
     </div>
     <% session.removeAttribute("deleteSuccess"); %>
     <% } %>
-
     <%-- Hiển thị thông báo Cập nhật thuộc tính và Tạo mã thành công --%>
     <% if (session.getAttribute("discountSuccess") != null) { %>
     <div class="alert alert-success">
@@ -129,7 +127,6 @@
     </div>
     <% session.removeAttribute("discountSuccess"); %>
     <% } %>
-
 
     <table class="table">
         <thead>
@@ -175,7 +172,6 @@
         <% } %>
     </table>
 </div>
-
 <h2 style="padding-bottom: 30px; margin: auto; width: 90%;">Thêm mã giảm giá mới:</h2>
 
 <%-- Hiển thị thông báo lỗi --%>
@@ -185,7 +181,6 @@
 </div>
 <% session.removeAttribute("errorMessage"); %>
 <% } %>
-
 
 <%-- Form tạo ra mã giảm giá mới --%>
 <form action="discountAdmin" method="post" style="margin: auto; width: 90%;">
@@ -198,19 +193,19 @@
     <input type="number" name="count" placeholder="Số lần sử dụng còn lại" min="0" required lang="vi">
     <input type="submit" class="btn btn-success" value="Thêm Mã Mới">
 </form>
-
 <!-- DiscountAdmin End -->
-
 
 <!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
+    <!-- Footer chung cho các trang -->
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
             <a href="" class="text-decoration-none">
-                <h1 class="logo" style="height: 60px; text-align: start; margin-top: -16px;">Nhóm 26</h1>
+                <h1 class="logo" style="height: 60px; text-align: start; margin-top: -16px;">Nhóm 63</h1>
             </a>
-            <p>Shop Nhóm 26 - Điểm đến đáng tin cậy cho các loại ảnh bản quyền, với sự đa dạng và phong phú trong
-                tất cả các thể loại. Khi bạn cần ảnh bản quyền. Hãy nhớ "Cần ảnh bản quyền đến với Shop Nhóm 26".
+            <p>Shop Nhóm 63 - Điểm đến đáng tin cậy cho các loại ảnh treo tường, poster, với sự đa dạng và phong phú
+                trong
+                tất cả các thể loại. Khi bạn cần ảnh treo tường. Hãy nhớ "Cần ảnh poster đến với Shop Nhóm 63".
             </p>
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>ĐH Nông Lâm HCM, Tp.Thủ Đức</p>
             <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>Model@gmail.com</p>
@@ -221,17 +216,17 @@
                 <div class="col-md-6 mb-5" style="padding-left: 70px;">
                     <h5 class="font-weight-bold text-dark mb-4">Di Chuyển Nhanh</h5>
                     <div class="d-flex flex-column justify-content-start">
-                        <a class="text-dark mb-2" href="./index"><i class="fa fa-angle-right mr-2"></i>Trang
+                        <a class="text-dark mb-2" href="index"><i class="fa fa-angle-right mr-2"></i>Trang
                             chủ</a>
-                        <a class="text-dark mb-2" href="./shop"><i class="fa fa-angle-right mr-2"></i>Của
+                        <a class="text-dark mb-2" href="shop"><i class="fa fa-angle-right mr-2"></i>Của
                             hàng</a>
-                        <a class="text-dark mb-2" href="./donhangcuaban"><i
+                        <a class="text-dark mb-2" href="donhangcuaban"><i
                                 class="fa fa-angle-right mr-2"></i>Đơn hàng của bạn</a>
-                        <a class="text-dark mb-2" href="./cart"><i class="fa fa-angle-right mr-2"></i>Giỏ
+                        <a class="text-dark mb-2" href="cart"><i class="fa fa-angle-right mr-2"></i>Giỏ
                             hàng</a>
-                        <a class="text-dark mb-2" href="./checkout"><i class="fa fa-angle-right mr-2"></i>Thanh
+                        <a class="text-dark mb-2" href="checkout"><i class="fa fa-angle-right mr-2"></i>Thanh
                             toán</a>
-                        <a class="text-dark" href="./contact"><i class="fa fa-angle-right mr-2"></i>Liên hệ</a>
+                        <a class="text-dark" href="contact"><i class="fa fa-angle-right mr-2"></i>Liên hệ</a>
                     </div>
                 </div>
                 <div class="col-md-6 mb-5">
@@ -255,9 +250,10 @@
             </div>
         </div>
     </div>
+    <!-- Footer chung cho các trang -->
+
 </div>
 <!-- Footer End -->
-
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
@@ -270,7 +266,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 <script src="lib/easing/easing.min.js"></script>
 <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
 
 <!-- Contact Javascript File -->
 <script src="mail/jqBootstrapValidation.min.js"></script>

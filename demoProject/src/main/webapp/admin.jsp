@@ -32,12 +32,18 @@
 </head>
 <body>
 <%
-    User user = (User) session.getAttribute("user");
-    int totalUser = (int) request.getAttribute("totalUser");
-    int newUser = (int) request.getAttribute("userNew");
-//    Tổng thu nhập
-    int totalPrice = (int) request.getAttribute("totalPrice");
-    int priceThisMonth = (int) request.getAttribute("priceThisMonth");
+    //    User user = (User) session.getAttribute("user");
+//    int totalUser = (int) request.getAttribute("totalUser");
+//    int newUser = (int) request.getAttribute("userNew");
+////    Tổng thu nhập
+//    int totalPrice = (int) request.getAttribute("totalPrice");
+//    int priceThisMonth = (int) request.getAttribute("priceThisMonth");
+
+    int totalUser = (request.getAttribute("totalUser") != null) ? (int) request.getAttribute("totalUser") : 0;
+    int newUser = (request.getAttribute("userNew") != null) ? (int) request.getAttribute("userNew") : 0;
+    int totalPrice = (request.getAttribute("totalPrice") != null) ? (int) request.getAttribute("totalPrice") : 0;
+    int priceThisMonth = (request.getAttribute("priceThisMonth") != null) ? (int) request.getAttribute("priceThisMonth") : 0;
+
 
 //    Tổng đơn hủy
     int totalCancel = (int) request.getAttribute("totalCancel");
@@ -149,7 +155,7 @@
                 </a>
             </li>
             <li class="nav-item menu-items">
-                <a  class="nav-link" id="backup">
+                <a class="nav-link" id="backup">
               <span class="menu-icon">
                 <i class="mdi mdi-table-large"></i>
               </span>
@@ -1044,21 +1050,21 @@
 <script src="assets/js/dashboard.js"></script>
 <script>
     const btnBackup = document.querySelector("#backup")
-    btnBackup.addEventListener("click",()=>{
+    btnBackup.addEventListener("click", () => {
         const path = prompt("Vui lòng nhập địa chỉ lưu trữ");
-        if(path != null || path.trim() !==""){
+        if (path != null || path.trim() !== "") {
             $.ajax({
                 type: "POST",
                 url: "http://localhost:8080/demoProject_war/backup",
-                data: { path },
-                success: function(response) {
-                   alert(response.message)
+                data: {path},
+                success: function (response) {
+                    alert(response.message)
                 },
-                error: function(error) {
+                error: function (error) {
                     console.error("Error during backup:", error);
                 }
             });
-        }else {
+        } else {
             alert("Vui lòng nhập đường dẫn để lưu trữ file backup.");
         }
     })

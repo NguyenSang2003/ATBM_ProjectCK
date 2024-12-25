@@ -1,6 +1,8 @@
 package Controller;
 
+import DAO.MaterialDAO;
 import DAO.ProductDAO;
+import DAO.SizeDAO;
 import DAO.TopicDAO;
 import cart.Cart;
 import Model.User;
@@ -40,6 +42,7 @@ public class CartController extends HttpServlet {
 
         String type = req.getParameter("type");
         String id = req.getParameter("idProduct");
+
         int sizeId = Integer.parseInt(req.getParameter("sizeId"));
         int materialId = Integer.parseInt(req.getParameter("materialId"));
 
@@ -51,12 +54,25 @@ public class CartController extends HttpServlet {
         if (cart == null) {
             cart = new Cart();
         }
+        SizeDAO sizeDAO = new SizeDAO();
+        MaterialDAO materialDAO = new MaterialDAO();
+
+        if (!sizeDAO.isValidSize(sizeId) || !materialDAO.isValidMaterial(materialId)) {
+            jsonObject.put("status", 400);
+            jsonObject.put("message", "Kích cỡ hoặc chất liệu không hợp lệ");
+            resp.setContentType("application/json");
+            resp.getWriter().write(jsonObject.toString());
+            return;
+        }
 
         // Gọi hàm add với cả sizeId và materialId
         if (cart.add(type, type + id, Integer.parseInt(id), materialId, sizeId)) {
             session.setAttribute("cart", cart);
             jsonObject.put("status", 200);
             jsonObject.put("message", "Thêm thành công");
+            System.out.println("Material ID: " + materialId);
+            System.out.println("Size ID: " + sizeId);
+
         } else {
             jsonObject.put("status", 500);
             jsonObject.put("message", "Thêm không thành công");
@@ -65,42 +81,6 @@ public class CartController extends HttpServlet {
         resp.setContentType("application/json");
         resp.getWriter().write(jsonObject.toString());
     }
-
-//    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        req.setCharacterEncoding("UTF-8");
-//        resp.setCharacterEncoding("UTF-8");
-//
-//        String type = req.getParameter("type");
-//        String id = req.getParameter("idProduct");
-//        int change = Integer.parseInt(req.getParameter("change")); // Lấy giá trị thay đổi (+1/-1)
-//
-//        HttpSession session = req.getSession();
-//        Cart cart = (Cart) session.getAttribute("cart");
-//        JSONObject jsonObject = new JSONObject();
-//
-//        if (cart == null || !cart.getData().containsKey(type + id)) {
-//            jsonObject.put("status", 500);
-//            jsonObject.put("message", "Sản phẩm không tồn tại trong giỏ hàng.");
-//        } else {
-//            CartProduct cartProduct = cart.getData().get(type + id);
-//            int newQuantity = cartProduct.getQuantity() + change;
-//
-//            if (newQuantity <= 0) {
-//                cart.remove(type + id); // Xóa sản phẩm nếu số lượng bằng 0
-//                jsonObject.put("newQuantity", 0);
-//            } else {
-//                cartProduct.setQuantity(newQuantity); // Cập nhật số lượng
-//                jsonObject.put("newQuantity", newQuantity);
-//            }
-//
-//            session.setAttribute("cart", cart);
-//            jsonObject.put("status", 200);
-//            jsonObject.put("message", "Cập nhật thành công.");
-//        }
-//
-//        resp.setContentType("application/json");
-//        resp.getWriter().write(jsonObject.toString());
-//    }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -142,29 +122,6 @@ public class CartController extends HttpServlet {
         resp.setContentType("application/json");
         resp.getWriter().write(jsonObject.toString());
     }
-
-
-//    @Override
-//    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        req.setCharacterEncoding("UTF-8");
-//        resp.setCharacterEncoding("UTF-8");
-//        HttpSession session = req.getSession();
-//        Cart cart = (Cart) session.getAttribute("cart");
-//        JSONObject jsonObject = new JSONObject();
-//        if (cart.removeAll()) {
-//            session.setAttribute("cart", cart);
-//            jsonObject.put("status", 200);
-//            jsonObject.put("message", "Xóa thành công");
-//            resp.setContentType("application/json");
-//            resp.getWriter().write(jsonObject.toString());
-//        } else {
-//            session.setAttribute("cart", cart);
-//            jsonObject.put("status", 500);
-//            jsonObject.put("message", "Xóa không thành công");
-//            resp.setContentType("application/json");
-//            resp.getWriter().write(jsonObject.toString());
-//        }
-//    }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

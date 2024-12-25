@@ -9,15 +9,33 @@ public class CartProduct {
     private int sizeId;
     private String materialName;
     private String sizeName;
+    private int materialPrice;
+    private int sizePrice;
 
-    private int MaterialPrice;
-    private int SizePrice;
+    // Setter cho materialId và sizeId
+    public void setMaterialId(int materialId) {
+        this.materialId = materialId;
+    }
 
-    public CartProduct(int quantity, Object object, int materialId, int sizeId) {
-        this.quantity = quantity;
-        this.object = object;
+    public void setSizeId(int sizeId) {
+        this.sizeId = sizeId;
+    }
+
+    // Getter cho materialId và sizeId
+    public int getMaterialId() {
+        return materialId;
+    }
+
+    public int getSizeId() {
+        return sizeId;
+    }
+
+    public CartProduct(int materialId, int sizeId, String materialName, String sizeName, int quantity) {
         this.materialId = materialId;
         this.sizeId = sizeId;
+        this.materialName = materialName;
+        this.sizeName = sizeName;
+        this.quantity = quantity;
     }
 
     public CartProduct() {
@@ -38,22 +56,6 @@ public class CartProduct {
 
     public void setObject(Object object) {
         this.object = object;
-    }
-
-    public int getMaterialId() {
-        return materialId;
-    }
-
-    public void setMaterialId(int materialId) {
-        this.materialId = materialId;
-    }
-
-    public int getSizeId() {
-        return sizeId;
-    }
-
-    public void setSizeId(int sizeId) {
-        this.sizeId = sizeId;
     }
 
     public int increase() {
@@ -89,24 +91,33 @@ public class CartProduct {
     }
 
     public int getMaterialPrice() {
-        return MaterialPrice;
+        return materialPrice;
     }
 
     public void setMaterialPrice(int materialPrice) {
-        MaterialPrice = materialPrice;
+        this.materialPrice = materialPrice;
     }
 
     public int getSizePrice() {
-        return SizePrice;
+        return sizePrice;
     }
 
     public void setSizePrice(int sizePrice) {
-        SizePrice = sizePrice;
+        this.sizePrice = sizePrice;
     }
 
     public int calculateTotalPrice() {
         int basePrice = price(); // Giá sản phẩm (OddImage) đã trừ giảm giá
-        return (basePrice + MaterialPrice + SizePrice) * quantity; // Tổng giá (tính cả số lượng)
+        return (basePrice + materialPrice + sizePrice) * quantity; // Tổng giá (tính cả số lượng)
     }
+
+//    public int calculateTotalPrice() {
+//        int basePrice = price() > 0 ? price() : 0; // Đảm bảo giá sản phẩm không âm
+//        int materialCost = materialPrice > 0 ? materialPrice : 0;
+//        int sizeCost = sizePrice > 0 ? sizePrice : 0;
+//
+//        return (basePrice + materialCost + sizeCost) * quantity;
+//    }
+
 
 }

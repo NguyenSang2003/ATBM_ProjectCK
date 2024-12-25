@@ -1,22 +1,16 @@
-<%@ page import="Model.User" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="Model.Topic" %>
-<%@ page import="Model.Order" %>
-<%@ page import="java.util.Locale" %>
-<%@ page import="java.text.DecimalFormat" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="cart.Cart" %>
 <%@ page import="favourite.Favourite" %>
-<!DOCTYPE html>
-<%--Dòng dưới để hiện lên theo charset UTF-8--%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="Model.User" %>
+<%@ page import="Model.Topic" %>
+<%@ page import="java.util.ArrayList" %>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <%--Dòng dưới để hiện lên theo charset UTF-8--%>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>Nhóm 26</title>
+    <title>Chi tiết đơn hàng</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -37,28 +31,22 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/common.css">
-    <link rel="stylesheet" href="/css/logo.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="./css/logo.css">
+    <link rel="stylesheet" href="./css/common.css">
 </head>
-
 <body>
 
-<% User user = (User) session.getAttribute("user");
-    ArrayList<Topic> listTopic = request.getAttribute("listTopic") == null ? new ArrayList<>() :
-            (ArrayList<Topic>) request.getAttribute("listTopic");
-    ArrayList<Order> listOrder = request.getAttribute("Order") == null ? new ArrayList<>() : (ArrayList<Order>) request.getAttribute("Order");
-%>
-<%
-    Locale vnLocal = new Locale("vi", "VN");
-    DecimalFormat vndFormat = new DecimalFormat("#,### VNĐ");
-%>
 <%
     Cart cart = (Cart) session.getAttribute("cart");
+    if (cart == null) {
+        cart = new Cart();
+    }
+    User user = (User) session.getAttribute("user");
+    ArrayList<Topic> listTopic = request.getAttribute("listTopic") == null ? new ArrayList<>() :
+            (ArrayList<Topic>) request.getAttribute("listTopic");
+%>
+<%
     Favourite favourite = (Favourite) session.getAttribute("favourite");
-    if (cart == null) cart = new Cart();
     if (favourite == null) favourite = new Favourite();
 %>
 <!-- Start - Phần dùng chung cho các trang dành cho user -->
@@ -66,8 +54,8 @@
 <div class="container-fluid">
     <div class="row align-items-center py-3 px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
-            <a href="./index" class="text-decoration-none">
-                <h1 class="logo">Nhóm 26</h1>
+            <a href="index" class="text-decoration-none">
+                <h1 class="logo">Nhóm 63</h1>
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
@@ -87,7 +75,7 @@
                 <i class="fas fa-heart text-primary"></i>
                 <span class="badge"><%=favourite.total()%></span>
             </a>
-            <a href="./cart" class="btn border" title="Giỏ hàng">
+            <a href="cart" class="btn border" title="Giỏ hàng">
                 <i class="fas fa-shopping-cart text-primary"></i>
                 <span class="badge"><%=cart.total()%></span>
             </a>
@@ -109,26 +97,21 @@
             <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light"
                  id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
                 <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-
-                    <%--Phần danh mục hiển thị các chủ đề--%>
-                    <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                        <%if (listTopic.size() == 0) {%>
-                        <p>Chưa có topic nào</p>
-                        <%} else {%>
-                        <%for (Topic topic : listTopic) {%>
-                        <a href="/topic?q=<%=topic.getName()%>" class="nav-item nav-link"><%=topic.getName()%>
-                        </a>
-                        <%}%>
-                        <%}%>
-                    </div>
-
+                    <%if (listTopic.size() == 0) {%>
+                    <p>Chưa có topic nào</p>
+                    <%} else {%>
+                    <%for (Topic topic : listTopic) {%>
+                    <a href="./pTopic?q=<%=topic.getName()%>" class="nav-item nav-link"><%=topic.getName()%>
+                    </a>
+                    <%}%>
+                    <%}%>
                 </div>
             </nav>
         </div>
         <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
-                <a href="./index" class="text-decoration-none d-block d-lg-none">
-                    <h1 class="logo">Nhóm 26</h1>
+                <a href="index" class="text-decoration-none d-block d-lg-none">
+                    <h1 class="logo">Nhóm 63</h1>
                 </a>
                 <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
@@ -137,12 +120,12 @@
                     <div class="navbar-nav mr-auto py-0">
                         <a href="index" class="nav-item nav-link">Trang chủ</a>
                         <a href="shop" class="nav-item nav-link">Cửa hàng</a>
-                        <a href="donhangcuaban" class="nav-item nav-link active">Đơn hàng của bạn</a>
+                        <a href="donhangcuaban" class="nav-item nav-link ">Đơn hàng của bạn</a>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Trang</a>
+                            <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Trang</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="./cart" class="dropdown-item">Giỏ hàng</a>
-                                <a href="./checkout" class="dropdown-item">Thanh toán</a>
+                                <a href="cart" class="dropdown-item active">Giỏ hàng</a>
+                                <a href="checkout" class="dropdown-item">Thanh toán</a>
                             </div>
                         </div>
                         <a href="contact" class="nav-item nav-link ">Liên hệ</a>
@@ -167,6 +150,8 @@
                             <a href="./product" class="dropdown-item">Quản lí sản phẩm</a>
                             <a href="./orderManager" class="dropdown-item">Quản lí đơn hàng</a>
                             <a href="./user" class="dropdown-item">Quản lí người dùng</a>
+                            <a href="./discountAdmin" class="dropdown-item">Quản lí mã giảm giá</a>
+                            <a href="./generateKey" class="dropdown-item">Tạo cặp khóa RSA</a>
                             <%}%>
                             <button class="dropdown-item" id="logout">Đăng xuất</button>
                         </div>
@@ -179,104 +164,57 @@
     </div>
 </div>
 <!-- Navbar End -->
-<!-- End - Phần dùng chung cho các trang dành cho user -->
 
+<!-- End - Phần dùng chung cho các trang dành cho user -->
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
-        <h1 class="font-weight-semi-bold text-uppercase mb-3">Đơn hàng của bạn</h1>
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Chi Tiết Đơn Hàng</h1>
         <div class="d-inline-flex">
-            <p class="m-0"><a href="index">Trang chủ</a></p>
+            <p class="m-0"><a href="index">Trang Chủ</a></p>
             <p class="m-0 px-2">-</p>
-            <p class="m-0">Đơn hàng của bạn</p>
+            <p class="m-0">Giỏ Hàng</p>
         </div>
     </div>
 </div>
 <!-- Page Header End -->
 
-<!-- Đơn hàng của bạn Start -->
 <div class="container-fluid pt-5">
+    <div class="text-center mb-4">
+    </div>
     <div class="row px-xl-5">
-        <div class="col-lg-0 table-responsive mb-5">
-            <table class="table table-bordered text-center mb-0">
-                <thead class="bg-secondary text-dark">
-                <tr>
-                    <th>Mã đơn hàng</th>
-                    <th>Tên đơn hàng</th>
-                    <th>Số lượng</th>
-                    <th>Chất liệu</th>
-                    <th>Kích cỡ</th>
-                    <th>Tên người nhận</th>
-                    <th>Số điện thoại</th>
-                    <th>Ngày đặt hàng</th>
-                    <th>Trạng thái</th>
-                    <th>Địa chỉ nhận hàng</th>
-                    <th>Thành tiền</th>
-                    <th>Hủy đơn</th>
-                </tr>
-                </thead>
-                <tbody class="align-middle">
-                <%if (listOrder.size() == 0) {%>
+        <div class="col-lg-12 mb-5">
+            <div class="order-details">
+                <%
+                    String orderSummary = (String) session.getAttribute("orderSummary");
+                    if (orderSummary == null) {
+                        response.sendRedirect("/checkout.jsp?error=no_order");
+                        return;
+                    }
+                %>
+                <h4 class="font-weight-bold">Thông tin đơn hàng:</h4>
+                <pre><%= orderSummary %></pre>
 
-                <%} else {%>
-                <%for (Order order : listOrder) {%>
-                <tr>
-                    <td class="align-middle"><%= order.getIdOrder()%>
-                    </td>
-                    <td class="align-middle"><a
-                        <%
-                            String href = "cart".equals(order.getType()) ? "./cart" : ("./detail?type=" + order.getType() + "&id=" + order.getIdProduct());
-                        %>
-                        <a href="<%=href%>"><%= order.getNameProduct()%>
-                        </a></td>
-                    <td class="align-middle"><%= order.getQuantity()%>
-                    </td>
-                    <td class="align-middle"><%= order.getNameMaterial() %>
-                    </td>
-                    <td class="align-middle"><%= order.getNameSize() %>
-                    </td>
-                    <td class="align-middle"><%= order.getReceiver()%>
-                    </td>
-                    <td class="align-middle"><%= order.getPhoneNumber()%>
-                    </td>
-                    <td class="align-middle">
-                        <%= order.getPurchareDate()%>
-                    </td>
-                    <td class="align-middle">
-                        <%= order.getStatus()%>
-                    </td>
-                    <td class="align-middle td-address" title="<%= order.getAddress()%>"><%= order.getAddress()%>
-                    </td>
-                    <td><%=vndFormat.format(order.getTotalPrice())%>
-                    </td>
-                    <td class="align-middle">
-                        <button data-id="<%=order.getIdOrder()%>" value="<%=order.getType()%>" data-toggle="modal"
-                                data-target="#deleteOrder" class="btn btn-sm btn-primary"><i
-                                class="fa fa-times"></i></button>
-                    </td>
-                </tr>
-                <%}%>
-                <%}%>
-
-
-                </tbody>
-            </table>
+                <form method="POST" action="/demoProject_war/download-order">
+                    <button type="submit" class="btn btn-primary py-2 px-4">Tải Xuống Đơn Hàng</button>
+                </form>
+            </div>
         </div>
-
     </div>
 </div>
-<!-- Đơn hàng của bạn End -->
-
 
 <!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
+
+    <!-- Footer chung cho các trang -->
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-            <a href="index" class="text-decoration-none">
-                <h1 class="logo" style="height: 60px; text-align: start; margin-top: -16px;">Nhóm 26</h1>
+            <a href="" class="text-decoration-none">
+                <h1 class="logo" style="height: 60px; text-align: start; margin-top: -16px;">Nhóm 63</h1>
             </a>
-            <p>Shop Nhóm 26 - Điểm đến đáng tin cậy cho các loại ảnh bản quyền, với sự đa dạng và phong phú trong
-                tất cả các thể loại. Khi bạn cần ảnh bản quyền. Hãy nhớ "Cần ảnh bản quyền đến với Shop Nhóm 26".
+            <p>Shop Nhóm 63 - Điểm đến đáng tin cậy cho các loại ảnh treo tường, poster, với sự đa dạng và phong phú
+                trong
+                tất cả các thể loại. Khi bạn cần ảnh treo tường. Hãy nhớ "Cần ảnh poster đến với Shop Nhóm 63".
             </p>
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>ĐH Nông Lâm HCM, Tp.Thủ Đức</p>
             <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>Model@gmail.com</p>
@@ -321,88 +259,19 @@
             </div>
         </div>
     </div>
+    <!-- Footer chung cho các trang -->
+
 </div>
 <!-- Footer End -->
 
-<div id="deleteOrder" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Hủy đơn hàng</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Bạn có chắc chắn muốn hủy đơn hàng ? </p>
-            </div>
-            <div class="modal-footer">
-                <button id="btn-delete-order" type="button" class="btn btn-danger">Xóa</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-<script src="js/Dialog.js"></script>
-<script>
-    // Dialog("#deleteOrder","#btn-delete-order","/order/odd","idOrder", "delete")
-    let where;
-    document.addEventListener("DOMContentLoaded", () => {
-        $("#deleteOrder").on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget) // Button that triggered the modal
-            let type = button.val()
-            id = button.data('id')// Extract info from data-* attributes
-            if (type === "odd") {
-                where = "/order/odd"
-            }
-            if (type === "album") {
-                where = "/order/album"
-            }
-            if (type === "cart") {
-                where = "/order/cart"
-            }
-        })
-        const btnDelete = document.querySelector("#btn-delete-order")
-        btnDelete.addEventListener('click', async () => {
-
-            const xhr = new XMLHttpRequest();
-            const url = `http://localhost:8080/demoProject_war/${where}?idOrder=${id}`;
-
-            xhr.open('DELETE', url, true);
-
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    const data = JSON.parse(xhr.responseText);
-                    alert(data.message);
-                    location.reload();
-                } else if (xhr.status === 500) {
-                    const data = JSON.parse(xhr.responseText);
-                    alert(data.message);
-                }
-            };
-
-            xhr.send();
-        })
-    })
-</script>
-
 
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 <script src="lib/easing/easing.min.js"></script>
 <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
-<!-- Contact Javascript File -->
-<script src="mail/jqBootstrapValidation.min.js"></script>
-<script src="mail/contact.js"></script>
-
-<!-- Template Javascript -->
 <script src="js/main.js"></script>
 </body>
-
 </html>

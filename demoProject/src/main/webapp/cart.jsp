@@ -64,7 +64,6 @@
             (ArrayList<Topic>) request.getAttribute("listTopic");
 %>
 
-
 <!-- Start - Phần dùng chung cho các trang dành cho user -->
 <!-- Topbar Start -->
 <div class="container-fluid">
@@ -99,7 +98,6 @@
     </div>
 </div>
 <!-- Topbar End -->
-
 
 <!-- Navbar Start -->
 <div class="container-fluid">
@@ -165,9 +163,10 @@
                             <% if (user.isAdmin()) {%>
                             <a href="./topic" class="dropdown-item">Quản lí chủ đề</a>
                             <a href="./product" class="dropdown-item">Quản lí sản phẩm</a>
-                            <a href="./order" class="dropdown-item">Quản lí đơn hàng</a>
+                            <a href="./orderManager" class="dropdown-item">Quản lí đơn hàng</a>
                             <a href="./user" class="dropdown-item">Quản lí người dùng</a>
                             <a href="./discountAdmin" class="dropdown-item">Quản lí mã giảm giá</a>
+                            <a href="./generateKey" class="dropdown-item">Tạo cặp khóa RSA</a>
                             <%}%>
                             <button class="dropdown-item" id="logout">Đăng xuất</button>
                         </div>
@@ -183,7 +182,6 @@
 
 <!-- End - Phần dùng chung cho các trang dành cho user -->
 
-
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
@@ -196,7 +194,6 @@
     </div>
 </div>
 <!-- Page Header End -->
-
 
 <!-- Cart Start -->
 <div class="container-fluid pt-5">
@@ -434,7 +431,6 @@
 </div>
 <!-- Cart End -->
 
-
 <!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
 
@@ -495,7 +491,6 @@
 
 </div>
 <!-- Footer End -->
-
 
 <!-- Back to Top -->
 <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>

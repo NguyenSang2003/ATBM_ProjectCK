@@ -18,7 +18,7 @@
     <%--Dòng dưới để hiện lên theo charset UTF-8--%>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-    <title>Nhóm 26</title>
+    <title>Nhóm 63</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -69,6 +69,7 @@
     int totalPage = (int) request.getAttribute("totalPage");
     String nameTopic = (String) request.getAttribute("nameTopic");
 %>
+
 <!-- Topbar Start -->
 <div class="container-fluid">
     <div class="row align-items-center py-3 px-xl-5">

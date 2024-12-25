@@ -21,13 +21,17 @@ public class OrderDAO {
     int currentYear = calendar.get(Calendar.YEAR);
     int currentMonth = calendar.get(Calendar.MONTH) + 1;
 
-    public boolean insertOrderOdd(int idOddImage, int idUser, String receiver, String phoneNumber, int quantity, double totalPrice, String address) {
+    // dùng để thêm đơn hàng mới
+    public boolean insertOrderOdd(int idOddImage, int idUser, String receiver, String phoneNumber, int quantity, double totalPrice, String address, int idMaterial, int idSize, String signature, boolean verified, boolean isTampered) {
         Connection connection = null;
-        ProductDAO productDAO = new ProductDAO();
         try {
             connection = Connect.getConnection();
-            String sql = "insert into OddImageOrder(idOddImage, idUser,receiver, phoneNumber, quantity ,totalPrice, status, address, purchareDate) values(?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO OddImageOrder(idOddImage, idUser, receiver, phoneNumber, quantity, totalPrice, status, address, purchareDate, idMaterial, idSize, Signature, Verified, isTampered) " +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            // Kiểm tra giá trị được truyền vào
+            System.out.println("idMaterial: " + idMaterial);
             preparedStatement.setInt(1, idOddImage);
             preparedStatement.setInt(2, idUser);
             preparedStatement.setString(3, receiver);
@@ -36,18 +40,57 @@ public class OrderDAO {
             preparedStatement.setDouble(6, totalPrice);
             preparedStatement.setString(7, "Đang chuẩn bị");
             preparedStatement.setString(8, address);
-            preparedStatement.setDate(9, sqlDate);
+            preparedStatement.setDate(9, new java.sql.Date(System.currentTimeMillis())); // Ngày hiện tại
+            preparedStatement.setInt(10, idMaterial);
+            preparedStatement.setInt(11, idSize);
+            preparedStatement.setString(12, signature);
+            preparedStatement.setBoolean(13, verified);
+            preparedStatement.setBoolean(14, isTampered);
+
             int check = preparedStatement.executeUpdate();
             if (check > 0) {
+                System.out.println("Đơn hàng đã được lưu vào OddImageOrder");
                 return true;
+            } else {
+                System.out.println("Không thể lưu đơn hàng vào OddImageOrder");
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println("Lỗi khi chèn dữ liệu vào OddImageOrder: " + e.getMessage());
+            throw new RuntimeException("Lỗi khi chèn dữ liệu vào OddImageOrder", e);
         } finally {
             Connect.closeConnection(connection);
         }
         return false;
     }
+
+
+    //mới
+//    public boolean insertOddImageOrder(int idUser, String receiver, String phoneNumber, int quantity, int totalPrice, String address, String orderDetails) {
+//        Connection connection = null;
+//        try {
+//            connection = Connect.getConnection(); // Sử dụng kết nối từ Connect giống hàm insertOrderOdd
+//            String sql = "INSERT INTO oddimageorder (idUser, receiver, phoneNumber, quantity, totalPrice, address, Signature, Verified, isTampered) " +
+//                    "VALUES (?, ?, ?, ?, ?, ?, NULL, 0, 0)";
+//            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+//            preparedStatement.setInt(1, idUser);
+//            preparedStatement.setString(2, receiver);
+//            preparedStatement.setString(3, phoneNumber);
+//            preparedStatement.setInt(4, quantity);
+//            preparedStatement.setInt(5, totalPrice);
+//            preparedStatement.setString(6, address);
+//
+//            int check = preparedStatement.executeUpdate();
+//            if (check > 0) {
+//                return true;
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException("Lỗi khi chèn dữ liệu vào oddimageorder: " + e.getMessage(), e);
+//        } finally {
+//            Connect.closeConnection(connection); // Đảm bảo đóng kết nối
+//        }
+//        return false;
+//    }
+
 
     public boolean inserOrderCart(String name, int idUser, String receiver, String phoneNumber, int quantity, int totalPrice, String address) {
         Connection connection = null;
