@@ -131,9 +131,34 @@ public class SizeDAO {
         }
     }
 
-    // Hàm main để kiểm tra
+    // Kiểm tra xem sizeId có hợp lệ hay không
+    public static boolean isValidSize(int sizeId) {
+        Connection connection = null;
+        boolean isValid = false;
+
+        try {
+            connection = Connect.getConnection();
+            String sql = "SELECT 1 FROM Size WHERE idSize = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, sizeId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Nếu tìm thấy một bản ghi thì sizeId hợp lệ
+            isValid = resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            Connect.closeConnection(connection);
+        }
+
+        return isValid;
+    }
+
+//    // Hàm main để kiểm tra
 //    public static void main(String[] args) {
 //        SizeDAO sizeDAO = new SizeDAO();
+//        sizeDAO.isValidSize(1);
+//        System.out.println(sizeDAO.isValidSize(1));
 //
 //        // Thêm một kích thước mới
 //        Size newSize = new Size(0, "XL", 100, 200, 1500);

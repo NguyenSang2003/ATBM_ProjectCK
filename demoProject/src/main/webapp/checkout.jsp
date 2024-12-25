@@ -40,6 +40,7 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/logo.css">
+    <link rel="stylesheet" href="./css/common.css">
 </head>
 
 <body>
@@ -50,9 +51,12 @@
 %>
 <%
     Cart cart = (Cart) session.getAttribute("cart");
-    if (cart == null) cart = new Cart();
+    if (cart == null) {
+        cart = new Cart();
+    }
     Favourite favourite = (Favourite) session.getAttribute("favourite");
     if (favourite == null) favourite = new Favourite();
+
 %>
 <%
     Locale vnLocal = new Locale("vi", "VN");
@@ -68,18 +72,23 @@
             </a>
         </div>
         <div class="col-lg-6 col-6 text-left">
-            <form action="">
+            <form action="./search" method="get">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                    <input type="text" name="q" class="form-control" placeholder="Tìm kiếm sản phẩm">
                     <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary" title="Tìm kiếm">
-                                <i class="fa fa-search"></i>
-                            </span>
+                        <button type="submit" class="input-group-text bg-transparent text-primary">
+                            <i class="fa fa-search"></i>
+                        </button>
                     </div>
                 </div>
             </form>
         </div>
         <div class="col-lg-3 col-6 text-right">
+            <%-- btn : showKeyList() --%>
+            <a href="./userkeys-management" class="btn border">
+                <i class="fas fa-key text-primary"></i>
+                <span class="badge"></span>
+            </a>
             <a href="./favourite" class="btn border" title="Yêu thích">
                 <i class="fas fa-heart text-primary"></i>
                 <span class="badge"><%=favourite.total()%></span>
@@ -131,17 +140,17 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="./index" class="nav-item nav-link">Trang chủ</a>
-                        <a href="./shop" class="nav-item nav-link">Cửa hàng</a>
-                        <a href="./donhangcuaban" class="nav-item nav-link ">Đơn hàng của bạn</a>
+                        <a href="index" class="nav-item nav-link">Trang chủ</a>
+                        <a href="shop" class="nav-item nav-link">Cửa hàng</a>
+                        <a href="donhangcuaban" class="nav-item nav-link">Đơn hàng của bạn</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle active" data-toggle="dropdown">Trang</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="./cart" class="dropdown-item">Giỏ hàng</a>
-                                <a href="./checkout" class="dropdown-item active">Thanh toán</a>
+                                <a href="cart" class="dropdown-item">Giỏ hàng</a>
+                                <a href="checkout" class="dropdown-item active">Thanh toán</a>
                             </div>
                         </div>
-                        <a href="contact" class="nav-item nav-link ">Liên hệ</a>
+                        <a href="contact" class="nav-item nav-link">Liên hệ</a>
                     </div>
 
                     <%--Phần login--%>
@@ -161,8 +170,9 @@
                             <% if (user.isAdmin()) {%>
                             <a href="./topic" class="dropdown-item">Quản lí chủ đề</a>
                             <a href="./product" class="dropdown-item">Quản lí sản phẩm</a>
-                            <a href="./orderManager" class="dropdown-item">Quản lí đơn hàng</a>
+                            <a href="./order" class="dropdown-item">Quản lí đơn hàng</a>
                             <a href="./user" class="dropdown-item">Quản lí người dùng</a>
+                            <a href="./discountAdmin" class="dropdown-item">Quản lí mã giảm giá</a>
                             <%}%>
                             <button class="dropdown-item" id="logout">Đăng xuất</button>
                         </div>
@@ -177,7 +187,6 @@
 <!-- Navbar End -->
 <!-- End - Phần dùng chung cho các trang dành cho user -->
 
-
 <!-- Page Header Start -->
 <div class="container-fluid bg-secondary mb-5">
     <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
@@ -191,83 +200,94 @@
 </div>
 <!-- Page Header End -->
 
-
 <!-- Checkout Start -->
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
         <div class="col-lg-8">
 
-            <div class="mb-4">
-                <h4 class="font-weight-semi-bold mb-4">Địa Chỉ Thanh Toán</h4>
-                <div class="row">
-                    <div class="col-md-6 form-group">
-                        <label>Họ</label>
-                        <input id="fist-name" class="form-control" type="text" placeholder="Nguyễn">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Tên</label>
-                        <input id="last-name" class="form-control" type="text" placeholder="Sáng">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Email</label>
-                        <input id="email" class="form-control" type="email" placeholder="example@email.com">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Số Điện Thoại</label>
-                        <input id="phoneNumber" class="form-control" type="text" placeholder="+123 456 789">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Tỉnh/Thành Phố</label>
-                        <select class="form-control" name="nameCity" id="nameCity">
-                            <option value="">Vui lòng chọn Tỉnh/Thành phố</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Quận/Huyện</label>
-                        <select class="form-control" name="nameDistrict" id="nameDistrict">
-                            <option value="">Vui lòng chọn Quận/Huyện</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Xã/Phường/Thị Trấn</label>
-                        <select class="form-control" name="nameCommune" id="nameCommune">
-                            <option value="">Vui lòng chọn Xã/Thị trấn</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Địa chỉ chi tiết</label>
-                        <input id="address-detail" class="form-control" type="text" placeholder="Đồng Nai">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label>Quốc Gia</label>
-                        <select disabled class="custom-select">
-                            <option selected>Việt Nam</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-6 form-group">
-                        <label>Mã ZIP</label>
-                        <input disabled class="form-control" type="text" placeholder="76116">
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="col-lg-4">
 
-            <!-- Mã mới có Js -->
+            <%--                        <!-- Mã mới có Js -->--%>
+            <%--                        <div class="card border-secondary mb-5">--%>
+            <%--                            <div class="card-header bg-secondary border-0">--%>
+            <%--                                <h4 class="font-weight-semi-bold m-0">Tổng Đơn Hàng</h4>--%>
+            <%--                            </div>--%>
+            <%--                            <div class="card-body">--%>
+            <%--                                <h5 class="font-weight-medium mb-3">Các Sản Phẩm</h5>--%>
+            <%--                                <%--%>
+            <%--                                    String name = null, type = null, image = null;--%>
+            <%--                                    int id = 0, price = 0, discount = 0, quantity = 0, idMaterial = 0, idSize = 0;--%>
+            <%--                                %>--%>
+            <%--                                <% for (Map.Entry<String, CartProduct> entry : cart.getData().entrySet()) {--%>
+            <%--                                    CartProduct cartProduct = entry.getValue();--%>
+            <%--                                    quantity = cartProduct.getQuantity();--%>
+            <%--                                    if (cartProduct.getObject() instanceof OddImage) {--%>
+            <%--                                        id = ((OddImage) cartProduct.getObject()).getIdOddImage();--%>
+            <%--                                        price = ((OddImage) cartProduct.getObject()).getPrice();--%>
+            <%--                                        discount = ((OddImage) cartProduct.getObject()).getDiscount();--%>
+            <%--                                        name = ((OddImage) cartProduct.getObject()).getName();--%>
+            <%--                                        type = ((OddImage) cartProduct.getObject()).getType();--%>
+            <%--                                        image = ((OddImage) cartProduct.getObject()).getImage();--%>
+            <%--                                        idMaterial = ((OddImage) cartProduct.getObject()).getIdMaterial();--%>
+            <%--                                        idSize = ((OddImage) cartProduct.getObject()).getIdSize();--%>
+            <%--                                    }--%>
+            <%--                                %>--%>
+
+            <%--                                <div class="d-flex justify-content-between">--%>
+            <%--                                    <p id="product">--%>
+            <%--                                        <input type="checkbox" checked>--%>
+            <%--                                        <a class="ml-1" href="./detail?type=<%=type%>&id=<%=id%>"><%=name%>--%>
+            <%--                                        </a> x <%=quantity%>--%>
+
+            <%--                                    </p>--%>
+            <%--                                    <p id="price"><%=vndFormat.format((price - discount) * quantity)%>--%>
+            <%--                                    </p>--%>
+            <%--                                    &lt;%&ndash; Hidden inputs for idMaterial and idSize &ndash;%&gt;--%>
+            <%--                                    <input type="hidden" name="products[<%=id%>][idMaterial]"--%>
+            <%--                                           value="<%=idMaterial%>">--%>
+            <%--                                    <input type="hidden" name="products[<%=id%>][idSize]" value="<%=idSize%>">--%>
+            <%--                                    <input type="hidden" name="products[<%=id%>][quantity]"--%>
+            <%--                                           value="<%=quantity%>">--%>
+            <%--                                </div>--%>
+
+            <%--                                <%}%>--%>
+            <%--                                <hr class="mt-0">--%>
+            <%--                                <div class="d-flex justify-content-between mb-3 pt-1">--%>
+            <%--                                    <h6 class="font-weight-medium">Tổng Tiền Chưa Ship</h6>--%>
+            <%--                                    <h6 class="font-weight-medium" id="subtotal"><%=vndFormat.format(cart.totalPrice())%>--%>
+            <%--                                    </h6>--%>
+            <%--                                </div>--%>
+            <%--                                <div class="d-flex justify-content-between">--%>
+            <%--                                    <h6 class="font-weight-medium">Giá Vận Chuyển</h6>--%>
+            <%--                                    <h6 class="font-weight-medium" id="shippingFee">30.000 VNĐ</h6>--%>
+            <%--                                </div>--%>
+            <%--                            </div>--%>
+            <%--                            <div class="card-footer border-secondary bg-transparent">--%>
+            <%--                                <div class="d-flex justify-content-between mt-2">--%>
+            <%--                                    <h5 class="font-weight-bold">Tổng Cộng</h5>--%>
+            <%--                                    <h5 class="font-weight-bold" id="total"><%=vndFormat.format(cart.totalPrice() + 30000)%>--%>
+            <%--                                    </h5>--%>
+            <%--                                </div>--%>
+            <%--                            </div>--%>
+            <%--                        </div>--%>
+
             <div class="card border-secondary mb-5">
                 <div class="card-header bg-secondary border-0">
                     <h4 class="font-weight-semi-bold m-0">Tổng Đơn Hàng</h4>
                 </div>
                 <div class="card-body">
                     <h5 class="font-weight-medium mb-3">Các Sản Phẩm</h5>
+
                     <%
-                        String name = null, type = null, image = null;
-                        int id = 0, price = 0, discount = 0, quantity = 0;
+                        String name = null, type = null, image = null, materialName = null, sizeName = null;
+                        int id = 0, price = 0, discount = 0, quantity = 0, idMaterial = 0, idSize = 0;
                     %>
+
                     <% for (Map.Entry<String, CartProduct> entry : cart.getData().entrySet()) {
                         CartProduct cartProduct = entry.getValue();
                         quantity = cartProduct.getQuantity();
+
                         if (cartProduct.getObject() instanceof OddImage) {
                             id = ((OddImage) cartProduct.getObject()).getIdOddImage();
                             price = ((OddImage) cartProduct.getObject()).getPrice();
@@ -275,20 +295,40 @@
                             name = ((OddImage) cartProduct.getObject()).getName();
                             type = ((OddImage) cartProduct.getObject()).getType();
                             image = ((OddImage) cartProduct.getObject()).getImage();
-
+                            idMaterial = cartProduct.getMaterialId();
+                            idSize = cartProduct.getSizeId();
+                            materialName = cartProduct.getMaterialName(); // Lấy tên chất liệu
+                            sizeName = cartProduct.getSizeName(); // Lấy tên kích cỡ
                         }
                     %>
-                    <div class="d-flex justify-content-between">
 
+                    <div class="d-flex justify-content-between">
                         <p id="product">
                             <input type="checkbox" checked>
                             <a class="ml-1" href="./detail?type=<%=type%>&id=<%=id%>"><%=name%>
                             </a> x <%=quantity%>
+                            <br>
+                            <small><strong>Chất liệu:</strong> <%= materialName %>
+                            </small><br>
+                            <small><strong>Kích cỡ:</strong> <%= sizeName %>
+                            </small>
+                            <small><strong>id Chất liệu:</strong> <%= idMaterial %>
+                            </small><br>
+                            <small><strong>id Kích cỡ:</strong> <%= idSize %>
+                            </small>
                         </p>
                         <p id="price"><%=vndFormat.format((price - discount) * quantity)%>
                         </p>
+
+                        <%-- Hidden inputs for idMaterial and idSize --%>
+                        <input type="hidden" name="products[<%=id%>][idMaterial]" value="<%=idMaterial%>">
+                        <input type="hidden" name="products[<%=id%>][idSize]" value="<%=idSize%>">
+                        <input type="hidden" name="products[<%=id%>][quantity]" value="<%=quantity%>">
+
                     </div>
+
                     <%}%>
+
                     <hr class="mt-0">
                     <div class="d-flex justify-content-between mb-3 pt-1">
                         <h6 class="font-weight-medium">Tổng Tiền Chưa Ship</h6>
@@ -298,14 +338,6 @@
                     <div class="d-flex justify-content-between">
                         <h6 class="font-weight-medium">Giá Vận Chuyển</h6>
                         <h6 class="font-weight-medium" id="shippingFee">30.000 VNĐ</h6>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Thuế VAT <i style="padding-left: 10px;"
-                                                                   class="far fa-question-circle"
-                                                                   title=" (Value Added Tax) là một loại thuế tiêu thụ được áp dụng trên giá trị gia tăng
-                                    của sản phẩm hoặc dịch vụ trong quá trình chuỗi cung ứng."></i>
-                        </h6>
-                        <h6 class="font-weight-medium" id="vatRate">0%</h6>
                     </div>
                 </div>
                 <div class="card-footer border-secondary bg-transparent">
@@ -317,35 +349,38 @@
                 </div>
             </div>
 
+
             <div class="card border-secondary mb-5">
                 <div class="card-header bg-secondary border-0">
                     <h4 class="font-weight-semi-bold m-0">Phương Thức Trả</h4>
                 </div>
                 <div class="card-body">
-                    <!-- <div class="form-group">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input" name="payment" id="paypal">
-                            <label class="custom-control-label" for="paypal">Paypal</label>
-                        </div>
-                    </div> -->
                     <div class="form-group">
                         <div class="custom-control custom-radio">
                             <input type="radio" class="custom-control-input" name="payment" id="directcheck">
                             <label class="custom-control-label" for="directcheck">Trả Khi Nhận Hàng</label>
                         </div>
                     </div>
-                    <div class="">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input" name="payment" id="banktransfer">
-                            <label class="custom-control-label" for="banktransfer">Chuyển Khoản Qua Ngân
-                                Hàng</label>
-                        </div>
-                    </div>
                 </div>
                 <div class="card-footer border-secondary bg-transparent">
-                    <button id="btn-submit" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3">Đặt
-                        Hàng
-                    </button>
+                    <%-- mới 2 --%>
+                    <form action="/demoProject_war/checkout" method="post">
+                        <div class="form-group">
+                            <label for="receiver">Người nhận:</label>
+                            <input type="text" class="form-control" id="receiver" name="receiver" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Số điện thoại:</label>
+                            <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Địa chỉ:</label>
+                            <textarea class="form-control" id="address" name="address" required></textarea>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-success">Xác Nhận Đặt Hàng</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -365,7 +400,7 @@
                 tất cả các thể loại. Khi bạn cần ảnh bản quyền. Hãy nhớ "Cần ảnh bản quyền đến với Shop Nhóm 26".
             </p>
             <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>ĐH Nông Lâm HCM, Tp.Thủ Đức</p>
-            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>Model@gmail.com</p>
+            <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>nhom26@gmail.com</p>
             <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>+010 345 67890</p>
         </div>
         <div class="col-lg-8 col-md-12">
@@ -430,67 +465,6 @@
 
 <script src="js/main.js"></script>
 <script>getAddressWithAPI()</script>
-<script>
-    const firstNameInput = document.querySelector("#fist-name");
-    const lastNameInput = document.querySelector("#last-name");
-    const phoneNumberInput = document.querySelector("#phoneNumber");
-    const cityInput = document.querySelector('#nameCity');
-    const districtInput = document.querySelector('#nameDistrict');
-    const communeInput = document.querySelector('#nameCommune');
-    const addressDetailInput = document.querySelector('#address-detail');
-
-    let firstName = firstNameInput.value;
-    let lastName = lastNameInput.value;
-    let phoneNumber = phoneNumberInput.value;
-    let city = cityInput.value;
-    let district = districtInput.value;
-    let commune = communeInput.value;
-    let addresDetail = addressDetailInput.value;
-
-    // Hàm xử lý khi giá trị thay đổi
-    function handleInputChange() {
-        firstName = firstNameInput.value;
-        lastName = lastNameInput.value;
-        phoneNumber = phoneNumberInput.value;
-        city = cityInput.value;
-        district = districtInput.value;
-        commune = communeInput.value;
-        addresDetail = addressDetailInput.value;
-        console.log(firstName, lastName, phoneNumber, city, district, commune);
-    }
-
-    // Gán sự kiện onchange cho từng trường nhập liệu
-    firstNameInput.addEventListener('change', handleInputChange);
-    lastNameInput.addEventListener('change', handleInputChange);
-    phoneNumberInput.addEventListener('change', handleInputChange);
-    cityInput.addEventListener('change', handleInputChange);
-    districtInput.addEventListener('change', handleInputChange);
-    communeInput.addEventListener('change', handleInputChange);
-    addressDetailInput.addEventListener("change", handleInputChange)
-
-    // Submit
-    const btnSubmit = document.querySelector("#btn-submit")
-    btnSubmit.addEventListener("click", () => {
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8080/demoProject_war/cart-order",
-            data: {
-                receiver: firstName + " " + lastName,
-                phoneNumber,
-                address: addresDetail + "," + commune + ',' + district + ',' + city
-            },
-            success: function (data) {
-                alert(data.message)
-                if (data.status === 200) {
-                    location.href = "http://localhost:8080/demoProject_war/donhangcuaban";
-                }
-            },
-            error: function (error) {
-                console.error("Error:", error);
-            }
-        });
-    })
-</script>
 </body>
 
 </html>

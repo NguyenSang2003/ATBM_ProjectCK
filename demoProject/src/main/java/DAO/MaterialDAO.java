@@ -129,9 +129,34 @@ public class MaterialDAO {
         }
     }
 
+    // Kiểm tra xem materialId có hợp lệ hay không
+    public static boolean isValidMaterial(int materialId) {
+        Connection connection = null;
+        boolean isValid = false;
+
+        try {
+            connection = Connect.getConnection();
+            String sql = "SELECT 1 FROM Material WHERE idMaterial = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, materialId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            // Nếu tìm thấy một bản ghi thì materialId hợp lệ
+            isValid = resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            Connect.closeConnection(connection);
+        }
+
+        return isValid;
+    }
+
 //    // Hàm main để kiểm tra
 //    public static void main(String[] args) {
 //        MaterialDAO materialDAO = new MaterialDAO();
+//        materialDAO.isValidMaterial(122);
+//        System.out.println(materialDAO.isValidMaterial(122));
 //
 //        // Thêm vật liệu mới
 //        Material newMaterial = new Material(0, "Wood", "Strong wood material", 500);

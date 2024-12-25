@@ -10,8 +10,8 @@ public class OddImage {
     String description;
     boolean isShow;
     String type = "odd";
-    int idMaterial; // Chất liệu
-    int idSize;     // Kích thước
+    String signature;//chữ ký điện tử đơn hàng
+    String verified; //trạng thái xác minh đơn hàng
 
     public String getType() {
         return type;
@@ -84,20 +84,20 @@ public class OddImage {
         isShow = show;
     }
 
-    public int getIdMaterial() {
-        return idMaterial;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setIdMaterial(int idMaterial) {
-        this.idMaterial = idMaterial;
+    public String getSignature() {
+        return signature;
     }
 
-    public int getIdSize() {
-        return idSize;
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
-    public void setIdSize(int idSize) {
-        this.idSize = idSize;
+    public enum VerificationStatus {
+        PENDING, VERIFIED, FAILED
     }
 
     @Override
@@ -111,6 +111,9 @@ public class OddImage {
                 ", belongTopic='" + belongTopic + '\'' +
                 ", description='" + description + '\'' +
                 ", isShow=" + isShow +
+                ", signature='" + signature + '\'' +
+                ", verified='" + verified + '\'' +
                 '}';
     }
+
 }

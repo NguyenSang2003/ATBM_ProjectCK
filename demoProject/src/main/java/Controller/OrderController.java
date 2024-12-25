@@ -108,13 +108,34 @@ public class OrderController extends HttpServlet {
             resp.sendRedirect(URL);
             return;
         }
-        double totalPrice = ((Integer.parseInt(quantity) * Integer.parseInt(price) )- (Integer.parseInt(quantity) * Integer.parseInt(price) * discount)) + 30000;
+        double totalPrice = ((Integer.parseInt(quantity) * Integer.parseInt(price)) - (Integer.parseInt(quantity) * Integer.parseInt(price) * discount)) + 30000;
         if ("odd".equals(type)) {
-            if (orderDAO.insertOrderOdd(Integer.parseInt(idProduct), user.getId(), receiver, phoneNumber, Integer.parseInt(quantity), totalPrice, address)) {
+            // Các giá trị mặc định hoặc đầu vào bổ sung
+            int idMaterial = 122; // Giá trị mặc định từ bảng
+            int idSize = 1; // Giá trị mặc định từ bảng
+            String signature = "DefaultSignature"; // Chữ ký mẫu
+            boolean verified = false; // Giá trị mặc định chưa xác minh
+            boolean isTampered = false; // Giá trị mặc định không bị giả mạo
+
+            // Gọi phương thức với đầy đủ tham số
+            if (orderDAO.insertOrderOdd(
+                    Integer.parseInt(idProduct),
+                    user.getId(),
+                    receiver,
+                    phoneNumber,
+                    Integer.parseInt(quantity),
+                    totalPrice,
+                    address,
+                    idMaterial,
+                    idSize,
+                    signature,
+                    verified,
+                    isTampered)) {
                 resp.sendRedirect("./donhangcuaban");
                 return;
             }
         }
+
     }
 
     @Override
