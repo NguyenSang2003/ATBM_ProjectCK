@@ -8,6 +8,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialDAO {
+    // Lấy tên vật liệu từ ID
+    public String getMaterialNameById(int idMaterial) {
+        String materialName = null;
+        Connection connection = null;
+
+        try {
+            connection = Connect.getConnection();
+            String sql = "SELECT nameMaterial FROM Material WHERE idMaterial = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idMaterial);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                materialName = resultSet.getString("nameMaterial");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            Connect.closeConnection(connection);
+        }
+
+        return materialName;
+    }
 
     // Lấy tất cả các vật liệu
     public List<Material> getAllMaterials() {

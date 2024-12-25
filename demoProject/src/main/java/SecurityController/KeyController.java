@@ -39,8 +39,8 @@ public class KeyController extends HttpServlet {
             case "/generateKey":
                 try {
                     int userId = (int) request.getSession().getAttribute("userId"); // Lấy userId từ session
-                    String privateKeyAndPublicKey = KeyPairGeneratorUtil.generateAndSaveKeyPair(userId); // Tạo cặp khóa
-                    response.getWriter().write(privateKeyAndPublicKey); // Trả về cả PrivateKey và PublicKey
+                    String privateKeyAndPublicKey = KeyPairGeneratorUtil.generateAndSaveKeyPair(userId); // Tạo cặp khóa DSA
+                    response.getWriter().write(privateKeyAndPublicKey); // Trả về cả PrivateKey và PublicKey DSA
                 } catch (Exception e) {
                     response.getWriter().write("Error generating keys: " + e.getMessage());
                 }

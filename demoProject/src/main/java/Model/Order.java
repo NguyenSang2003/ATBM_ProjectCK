@@ -15,9 +15,18 @@ public class Order {
     int idProduct;
     int idMaterial; // ID của chất liệu
     int idSize;     // ID của kích thước
+    private boolean isVerified;
 
-     String nameMaterial;
-     String nameSize;
+    public boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    String nameMaterial;
+    String nameSize;
 
     public String getNameMaterial() {
         return nameMaterial;

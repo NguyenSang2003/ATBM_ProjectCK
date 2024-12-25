@@ -8,6 +8,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SizeDAO {
+    // Lấy tên kích thước từ ID
+    public String getSizeNameById(int idSize) {
+        String sizeName = null;
+        Connection connection = null;
+
+        try {
+            connection = Connect.getConnection();
+            String sql = "SELECT nameSize FROM Size WHERE idSize = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idSize);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                sizeName = resultSet.getString("nameSize");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            Connect.closeConnection(connection);
+        }
+
+        return sizeName;
+    }
 
     // Lấy tất cả các kích thước
     public List<Size> getAllSizes() {

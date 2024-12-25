@@ -1,26 +1,31 @@
 package Controller;
 
-import DAO.OrderDAO;
-import DAO.ProductDAO;
-import DAO.TopicDAO;
+import DAO.*;
 import Model.User;
 import cart.Cart;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 import cart.CartProduct;
 import Model.OddImage;
 
 import javax.servlet.RequestDispatcher;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+import javax.servlet.annotation.MultipartConfig;
+
 @WebServlet(name = "CheckoutController", value = "/checkout")
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10,      // 10MB
+        maxRequestSize = 1024 * 1024 * 50   // 50MB
+)
+//@WebServlet(name = "CheckoutController", value = "/checkout")
 public class CheckoutController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -61,37 +66,74 @@ public class CheckoutController extends HttpServlet {
         String phoneNumber = req.getParameter("phoneNumber");
         String address = req.getParameter("address");
 
-        // Lấy giỏ hàng từ session
-        HttpSession session = req.getSession();
-        Cart cart = (Cart) session.getAttribute("cart");
-        User user = (User) session.getAttribute("user");
-
-        // Kiểm tra tính hợp lệ của thông tin
-        if (user == null || cart == null || cart.total() == 0 || receiver == null || phoneNumber == null || address == null) {
+        // Kiểm tra dữ liệu
+        if (receiver == null || receiver.isEmpty() || phoneNumber == null || phoneNumber.isEmpty() || address == null || address.isEmpty()) {
+            System.out.println("Invalid request: Missing form data.");
             resp.sendRedirect("checkout.jsp?error=invalid_request");
             return;
         }
 
+        HttpSession session = req.getSession();
+
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            resp.sendRedirect("login.jsp");
+            return;
+        }
+        // Lấy giỏ hàng từ session
+        Cart cart = (Cart) session.getAttribute("cart");
+        if (cart == null || cart.total() == 0) {
+            resp.sendRedirect("checkout.jsp?error=empty_cart");
+            return;
+        }
+
+        // Kiểm tra tính hợp lệ của thông tin
+        if (user == null || cart == null || cart.total() == 0 || receiver == null || phoneNumber == null || address == null) {
+            System.out.println("Invalid request: User or cart is missing, or form data is incomplete.");
+            resp.sendRedirect("checkout.jsp?error=invalid_request");
+            return;
+        }
+
+        // Log thêm thông tin giỏ hàng
+        System.out.println("Cart total: " + cart.total());
+
         double totalPrice = cart.totalPrice() + 30000; // Thêm phí ship
         boolean hasError = false;
 
+        // Kiểm tra và lấy file publicKey
+        Part publicKeyPart = req.getPart("publicKey");
+        if (publicKeyPart == null || publicKeyPart.getSize() == 0) {
+            resp.sendRedirect("checkout.jsp?error=public_key_missing");
+            System.out.println("Public key file is missing.");
+            return;
+        }
+
+        // Đọc nội dung file publicKey.txt
+        InputStream publicKeyInputStream = publicKeyPart.getInputStream();
+        String publicKey = new String(publicKeyInputStream.readAllBytes(), StandardCharsets.UTF_8).trim();
+        System.out.println("Public key: " + publicKey);
+
+        System.out.println("Receiver: " + receiver);
+        System.out.println("Phone: " + phoneNumber);
+        System.out.println("Address: " + address);
+        System.out.println("User: " + (user != null ? user.getId() : "No user"));
+        System.out.println("Cart Total: " + (cart != null ? cart.totalPrice() : "No cart"));
+
+
+        // Lặp qua tất cả các sản phẩm trong giỏ hàng để lưu đơn hàng
         try {
-            // Lặp qua tất cả các sản phẩm trong giỏ hàng để lưu đơn hàng
+            // Gọi OrderDAO để lưu thông tin đơn hàng
             for (Map.Entry<String, CartProduct> entry : cart.getData().entrySet()) {
                 CartProduct product = entry.getValue();
 
-                // Kiểm tra và lấy các tham số idMaterial và idSize
                 int idMaterial = product.getMaterialId();
                 int idSize = product.getSizeId();
 
                 if (idMaterial == 0 || idSize == 0) {
-                    // Nếu idMaterial hoặc idSize bị sai, bạn có thể xử lý hoặc thông báo lỗi
-                    System.out.println("idmaterial == 0 và id size == 0 khả năng");
                     hasError = true;
                     break;
                 }
 
-                // Gọi OrderDAO để lưu thông tin đơn hàng
                 OddImage oddImage = (OddImage) product.getObject();
                 OrderDAO orderDAO = new OrderDAO();
                 boolean isInserted = orderDAO.insertOrderOdd(
@@ -100,13 +142,14 @@ public class CheckoutController extends HttpServlet {
                         receiver,
                         phoneNumber,
                         product.getQuantity(),
-                        product.calculateTotalPrice() + 30000, // Thêm phí ship
+                        product.calculateTotalPrice() + 30000,
                         address,
                         idMaterial,
                         idSize,
                         oddImage.getSignature(),
                         false, // Đơn hàng chưa xác minh
-                        false  // Đơn hàng chưa bị chỉnh sửa
+                        false, // Đơn hàng chưa bị chỉnh sửa
+                        publicKey // Thêm publicKey vào đây
                 );
 
                 // Kiểm tra kết quả lưu đơn hàng
@@ -125,29 +168,40 @@ public class CheckoutController extends HttpServlet {
 
             // Tạo bản tóm tắt đơn hàng để hiển thị cho người dùng
             StringBuilder orderDetails = new StringBuilder();
+            MaterialDAO materialDAO = new MaterialDAO(); // Đảm bảo đã có DAO này
+            SizeDAO sizeDAO = new SizeDAO(); // Đảm bảo đã có DAO này
+
             for (Map.Entry<String, CartProduct> entry : cart.getData().entrySet()) {
                 CartProduct product = entry.getValue();
 
                 if (product.getObject() instanceof OddImage) {
                     OddImage oddImage = (OddImage) product.getObject();
+
+                    // Lấy tên chất liệu từ database
+                    String materialName = materialDAO.getMaterialNameById(product.getMaterialId());
+
+                    // Lấy tên kích cỡ từ database
+                    String sizeName = sizeDAO.getSizeNameById(product.getSizeId());
+
+                    // Thêm chi tiết sản phẩm vào orderDetails
                     orderDetails.append("Mặt hàng: ").append(oddImage.getName())
                             .append(", Số lượng: ").append(product.getQuantity())
-                            .append(", Chất liệu: ").append(product.getMaterialId())
-                            .append(", Kích cỡ: ").append(product.getSizeId())
+                            .append(", Chất liệu: ").append(materialName)
+                            .append(", Kích cỡ: ").append(sizeName)
                             .append(", Thành tiền: ").append(product.calculateTotalPrice()).append("\n");
                 }
             }
 
-            // Tạo thông tin tóm tắt đơn hàng (bao gồm người nhận, số điện thoại, địa chỉ)
+// Tạo thông tin tóm tắt đơn hàng (bao gồm người nhận, số điện thoại, địa chỉ)
             String orderSummary = "Người nhận: " + receiver +
                     "\nSố điện thoại: " + phoneNumber +
                     "\nĐịa chỉ: " + address +
                     "\nChi tiết:\n" + orderDetails;
 
-            // Lưu thông tin đơn hàng vào session để sử dụng sau này
+// Lưu thông tin đơn hàng vào session để sử dụng sau này
             session.setAttribute("orderSummary", orderSummary);
 
-            // Xóa giỏ hàng sau khi đơn hàng được xử lý thành công
+// Xóa giỏ hàng sau khi đơn hàng được xử lý thành công
             session.removeAttribute("cart");
 
             // Chuyển tiếp đến trang tóm tắt đơn hàng (order-summary.jsp)

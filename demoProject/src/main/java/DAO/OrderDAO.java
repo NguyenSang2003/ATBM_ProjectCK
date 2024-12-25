@@ -22,31 +22,34 @@ public class OrderDAO {
     int currentMonth = calendar.get(Calendar.MONTH) + 1;
 
     // dùng để thêm đơn hàng mới
-    public boolean insertOrderOdd(int idOddImage, int idUser, String receiver, String phoneNumber, int quantity, double totalPrice, String address, int idMaterial, int idSize, String signature, boolean verified, boolean isTampered) {
+    public boolean insertOrderOdd(int idOddImage, int idUser, String receiver, String phoneNumber, int quantity, double totalPrice, String address, int idMaterial, int idSize, String signature, boolean verified, boolean isTampered, String publicKey) {
         Connection connection = null;
         try {
             connection = Connect.getConnection();
-            String sql = "INSERT INTO OddImageOrder(idOddImage, idUser, receiver, phoneNumber, quantity, totalPrice, status, address, purchareDate, idMaterial, idSize, Signature, Verified, isTampered) " +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            // SQL để chèn dữ liệu vào bảng OddImageOrder
+            String sql = "INSERT INTO OddImageOrder(idOddImage, idUser, receiver, phoneNumber, quantity, totalPrice, status, address, purchareDate, idMaterial, idSize, Signature, Verified, isTampered, publicKey) " +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            // Kiểm tra giá trị được truyền vào
-            System.out.println("idMaterial: " + idMaterial);
+            // Gán các tham số vào PreparedStatement
             preparedStatement.setInt(1, idOddImage);
             preparedStatement.setInt(2, idUser);
             preparedStatement.setString(3, receiver);
             preparedStatement.setString(4, phoneNumber);
             preparedStatement.setInt(5, quantity);
             preparedStatement.setDouble(6, totalPrice);
-            preparedStatement.setString(7, "Đang chuẩn bị");
+            preparedStatement.setString(7, "Đang chuẩn bị");  // Ví dụ về giá trị status
             preparedStatement.setString(8, address);
-            preparedStatement.setDate(9, new java.sql.Date(System.currentTimeMillis())); // Ngày hiện tại
+            preparedStatement.setDate(9, new java.sql.Date(System.currentTimeMillis()));  // Ngày hiện tại
             preparedStatement.setInt(10, idMaterial);
             preparedStatement.setInt(11, idSize);
             preparedStatement.setString(12, signature);
             preparedStatement.setBoolean(13, verified);
             preparedStatement.setBoolean(14, isTampered);
+            preparedStatement.setString(15, publicKey);  // Lưu publicKey vào cột mới
 
+            // Thực thi câu lệnh
             int check = preparedStatement.executeUpdate();
             if (check > 0) {
                 System.out.println("Đơn hàng đã được lưu vào OddImageOrder");
@@ -63,34 +66,276 @@ public class OrderDAO {
         return false;
     }
 
-
-    //mới
-//    public boolean insertOddImageOrder(int idUser, String receiver, String phoneNumber, int quantity, int totalPrice, String address, String orderDetails) {
+//    // Phương thức lấy chi tiết đơn hàng dựa trên idOrder
+//    public String getOrderDetailsById(int idOrder) {
 //        Connection connection = null;
-//        try {
-//            connection = Connect.getConnection(); // Sử dụng kết nối từ Connect giống hàm insertOrderOdd
-//            String sql = "INSERT INTO oddimageorder (idUser, receiver, phoneNumber, quantity, totalPrice, address, Signature, Verified, isTampered) " +
-//                    "VALUES (?, ?, ?, ?, ?, ?, NULL, 0, 0)";
-//            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-//            preparedStatement.setInt(1, idUser);
-//            preparedStatement.setString(2, receiver);
-//            preparedStatement.setString(3, phoneNumber);
-//            preparedStatement.setInt(4, quantity);
-//            preparedStatement.setInt(5, totalPrice);
-//            preparedStatement.setString(6, address);
+//        PreparedStatement preparedStatement = null;
+//        PreparedStatement updateStatement = null;
+//        ResultSet resultSet = null;
+//        StringBuilder orderDetails = new StringBuilder();
 //
-//            int check = preparedStatement.executeUpdate();
-//            if (check > 0) {
-//                return true;
+//        try {
+//            // Kết nối đến cơ sở dữ liệu
+//            connection = Connect.getConnection();
+//
+//            // SQL truy vấn để lấy thông tin từ bảng OddImageOrder với JOIN với bảng Size và Material
+//            String sql = "SELECT o.receiver, o.phoneNumber, o.address, o.quantity, o.totalPrice, " +
+//                    "oi.name AS oddImageName, m.nameMaterial, s.nameSize, o.orderDetails " +
+//                    "FROM OddImageOrder o " +
+//                    "JOIN Size s ON o.idSize = s.idSize " +
+//                    "JOIN Material m ON o.idMaterial = m.idMaterial " +
+//                    "JOIN OddImage oi ON o.idOddImage = oi.idOddImage " +
+//                    "WHERE o.idOrder = ?";
+//
+//            // Chuẩn bị câu lệnh SQL
+//            preparedStatement = connection.prepareStatement(sql);
+//            preparedStatement.setInt(1, idOrder);  // Gán giá trị idOrder vào câu lệnh SQL
+//
+//            // Thực thi truy vấn và lấy kết quả
+//            resultSet = preparedStatement.executeQuery();
+//
+//            // Nếu tìm thấy kết quả
+//            if (resultSet.next()) {
+//                String receiver = resultSet.getString("receiver");
+//                String phoneNumber = resultSet.getString("phoneNumber");
+//                String address = resultSet.getString("address");
+//                int quantity = resultSet.getInt("quantity");
+//                double totalPrice = resultSet.getDouble("totalPrice");
+//                String nameMaterial = resultSet.getString("nameMaterial");
+//                String oddImageName = resultSet.getString("oddImageName");
+//                String nameSize = resultSet.getString("nameSize");
+//                String existingOrderDetails = resultSet.getString("orderDetails");
+//
+//                // Kiểm tra nếu `orderDetails` chưa tồn tại, thì tạo mới và lưu vào DB
+//                if (existingOrderDetails == null || existingOrderDetails.isEmpty()) {
+//                    orderDetails.append("Người nhận: ").append(receiver).append("\n");
+//                    orderDetails.append("Số điện thoại: ").append(phoneNumber).append("\n");
+//                    orderDetails.append("Địa chỉ: ").append(address).append("\n");
+//                    orderDetails.append("Chi tiết:\n");
+//                    orderDetails.append("Mặt hàng: ").append(oddImageName).append(", ");
+//                    orderDetails.append("Số lượng: ").append(quantity).append(", ");
+//                    orderDetails.append("Chất liệu: ").append(nameMaterial).append(", ");
+//                    orderDetails.append("Kích cỡ: ").append(nameSize).append(", ");
+//                    orderDetails.append("Thành tiền: ").append(totalPrice).append("\n");
+//
+//                    // SQL để cập nhật cột `orderDetails`
+//                    String updateSql = "UPDATE OddImageOrder SET orderDetails = ? WHERE idOrder = ?";
+//                    updateStatement = connection.prepareStatement(updateSql);
+//                    updateStatement.setString(1, orderDetails.toString());
+//                    updateStatement.setInt(2, idOrder);
+//                    updateStatement.executeUpdate();  // Lưu thông tin chi tiết vào DB
+//                } else {
+//                    // Nếu đã tồn tại, sử dụng giá trị từ DB
+//                    orderDetails.append(existingOrderDetails);
+//                }
+//            } else {
+//                orderDetails.append("Không tìm thấy đơn hàng với idOrder: ").append(idOrder).append("\n");
 //            }
-//        } catch (Exception e) {
-//            throw new RuntimeException("Lỗi khi chèn dữ liệu vào oddimageorder: " + e.getMessage(), e);
+//        } catch (SQLException e) {
+//            System.out.println("Lỗi khi truy vấn dữ liệu từ OddImageOrder: " + e.getMessage());
+//            e.printStackTrace();
 //        } finally {
-//            Connect.closeConnection(connection); // Đảm bảo đóng kết nối
+//            // Đảm bảo đóng kết nối và các tài nguyên liên quan
+//            Connect.closeConnection(connection);
 //        }
-//        return false;
+//        return orderDetails.toString();
 //    }
 
+    // Phương thức lấy chi tiết đơn hàng dựa trên idOrder
+    public String getOrderDetailsById(int idOrder) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        StringBuilder orderDetails = new StringBuilder();
+
+        try {
+            // Kết nối đến cơ sở dữ liệu
+            connection = Connect.getConnection();
+
+            // SQL truy vấn để lấy thông tin từ bảng OddImageOrder với JOIN với bảng Size và Material
+            String sql = "SELECT o.receiver, o.phoneNumber, o.address, o.quantity, o.totalPrice, " +
+                    "oi.name AS oddImageName, m.nameMaterial, s.nameSize " +
+                    "FROM OddImageOrder o " +
+                    "JOIN Size s ON o.idSize = s.idSize " +
+                    "JOIN Material m ON o.idMaterial = m.idMaterial " +
+                    "JOIN OddImage oi ON o.idOddImage = oi.idOddImage " +
+                    "WHERE o.idOrder = ?";
+
+            // Chuẩn bị câu lệnh SQL
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idOrder);  // Gán giá trị idOrder vào câu lệnh SQL
+
+            // Thực thi truy vấn và lấy kết quả
+            resultSet = preparedStatement.executeQuery();
+
+            // Nếu tìm thấy kết quả
+            if (resultSet.next()) {
+                String receiver = resultSet.getString("receiver");
+                String phoneNumber = resultSet.getString("phoneNumber");
+                String address = resultSet.getString("address");
+                int quantity = resultSet.getInt("quantity");
+                double totalPrice = resultSet.getDouble("totalPrice");
+                String nameMaterial = resultSet.getString("nameMaterial");
+                String oddImageName = resultSet.getString("oddImageName");
+                String nameSize = resultSet.getString("nameSize");
+
+                // Lấy phí vận chuyển từ giỏ hàng hoặc từ một nguồn khác
+                double shippingFee = 30000; // Có thể thay đổi nếu có thay đổi phí vận chuyển
+
+                // Tính lại tổng tiền bao gồm phí vận chuyển
+                totalPrice += shippingFee;
+
+                // Thêm chi tiết đơn hàng vào orderDetails
+                orderDetails.append("Người nhận: ").append(receiver).append("\n");
+                orderDetails.append("Số điện thoại: ").append(phoneNumber).append("\n");
+                orderDetails.append("Địa chỉ: ").append(address).append("\n");
+                orderDetails.append("Chi tiết:\n");
+                orderDetails.append("Mặt hàng: ").append(oddImageName).append(", ");
+                orderDetails.append("Số lượng: ").append(quantity).append(", ");
+                orderDetails.append("Chất liệu: ").append(nameMaterial).append(", ");
+                orderDetails.append("Kích cỡ: ").append(nameSize).append(", ");
+                orderDetails.append("Thành tiền: ").append(totalPrice).append("\n");
+            } else {
+                orderDetails.append("Không tìm thấy đơn hàng với idOrder: ").append(idOrder).append("\n");
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi truy vấn dữ liệu từ OddImageOrder: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Đảm bảo đóng kết nối và các tài nguyên liên quan
+            Connect.closeConnection(connection);
+        }
+        return orderDetails.toString();
+    }
+
+
+    // Phương thức cập nhật trạng thái xác thực của đơn hàng (Verified và Signature)
+    public boolean updateOrderVerificationStatus(int orderId, String signatureBase64) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            // Kết nối đến cơ sở dữ liệu
+            connection = Connect.getConnection();
+
+            // SQL câu lệnh UPDATE để cập nhật cột Signature và Verified cho đơn hàng
+            String sql = "UPDATE OddImageOrder SET Signature = ?, Verified = 1 WHERE idOrder = ?";
+
+            // Chuẩn bị câu lệnh SQL
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, signatureBase64);  // Cập nhật Signature với giá trị Base64
+            preparedStatement.setInt(2, orderId);  // Cập nhật cho đơn hàng với idOrder tương ứng
+
+            // Thực thi câu lệnh UPDATE
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+            // Kiểm tra xem có cập nhật thành công hay không
+            if (rowsUpdated > 0) {
+                System.out.println("Đơn hàng với idOrder " + orderId + " đã được xác thực thành công.");
+                return true;
+            } else {
+                System.out.println("Không tìm thấy đơn hàng với idOrder " + orderId);
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi cập nhật trạng thái xác thực cho đơn hàng: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            // Đảm bảo đóng kết nối và các tài nguyên liên quan
+            Connect.closeConnection(connection);
+        }
+        return false;
+    }
+
+    // Phương thức lấy public key theo idorder
+    public String getPublicKeyByOrderId(int idOrder) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        String publicKey = null;
+
+        try {
+            // Kết nối đến cơ sở dữ liệu
+            connection = Connect.getConnection();
+
+            // SQL để lấy publicKey từ bảng OddImageOrder theo idOrder
+            String sql = "SELECT publicKey FROM OddImageOrder WHERE idOrder = ?";
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idOrder);  // Gán idOrder vào câu truy vấn
+
+            resultSet = preparedStatement.executeQuery();
+
+            // Nếu tìm thấy dữ liệu
+            if (resultSet.next()) {
+                publicKey = resultSet.getString("publicKey");
+            }
+        } catch (Exception e) {
+            System.out.println("Lỗi khi lấy publicKey từ OddImageOrder: " + e.getMessage());
+            throw new RuntimeException("Lỗi khi lấy publicKey từ OddImageOrder", e);
+        } finally {
+            Connect.closeConnection(connection);
+        }
+
+        return publicKey;
+    }
+
+    // Phương thức lấy chi tiết đơn hàng từ cột orderDetails
+    public String getOrderDetailsAsText(int idOrder) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Kết nối đến cơ sở dữ liệu
+            connection = Connect.getConnection();
+
+            // SQL truy vấn để lấy orderDetails
+            String sql = "SELECT orderDetails FROM OddImageOrder WHERE idOrder = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idOrder);  // Gán giá trị idOrder vào câu lệnh SQL
+
+            // Thực thi truy vấn và lấy kết quả
+            resultSet = preparedStatement.executeQuery();
+
+            // Nếu tìm thấy kết quả
+            if (resultSet.next()) {
+                return resultSet.getString("orderDetails");
+            } else {
+                return "Không tìm thấy chi tiết đơn hàng với idOrder: " + idOrder;
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi khi truy vấn orderDetails: " + e.getMessage());
+            e.printStackTrace();
+            return "Lỗi khi truy vấn chi tiết đơn hàng.";
+        } finally {
+            // Đảm bảo đóng kết nối và các tài nguyên liên quan
+            Connect.closeConnection(connection);
+        }
+    }
+
+
+    // Hàm main để test phương thức
+    public static void main(String[] args) {
+        OrderDAO orderDAO = new OrderDAO();
+        String orderDetails = orderDAO.getOrderDetailsById(37);
+        String orderDetails2 = orderDAO.getOrderDetailsById(311);
+        System.out.println("Chi tiết đơn hàng của id 37" + orderDetails);
+        System.out.println("Chi tiết đơn hàng của id 311" + orderDetails2);
+
+        orderDAO.getOrderDetailsById(42);
+        System.out.println(orderDAO.getOrderDetailsById(42));
+
+        System.out.println("Public key của idorder 42 là: " + orderDAO.getPublicKeyByOrderId(42));
+
+        String signatureBase64 = "dGVzdC1zaWduYXR1cmUtYmFzZTY0";  // Ví dụ về một chữ ký Base64
+        boolean isVerified = true;
+
+        // Nếu chữ ký hợp lệ, cập nhật trạng thái đơn hàng
+        if (isVerified) {
+            // Cập nhật trạng thái đơn hàng
+            orderDAO.updateOrderVerificationStatus(36, signatureBase64);
+        }
+    }
 
     public boolean inserOrderCart(String name, int idUser, String receiver, String phoneNumber, int quantity, int totalPrice, String address) {
         Connection connection = null;
