@@ -4,77 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c175763e-6712-4704-8673-df0f362b9a7f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/ATBM_ProjectCK.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/cho1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/cho2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/cho3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/meo1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/meo2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/meo3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/thiennhien1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/thiennhien2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/thiennhien3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/vutru1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/vutru2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/images/vutru3.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/EditDiscount.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/EditDiscount.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/EditOddImage.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/EditOddImage.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/EditShip.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/EditShip.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/VerifyEmail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/VerifyEmail.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/admin.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/admin.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/checkout.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/checkout.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/contact.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/contact.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/detail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/detail.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/donhangcuaban.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/donhangcuaban.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/favourite.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/favourite.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/findEmail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/findEmail.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/forgotPassword.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/forgotPassword.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/avatar.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/cho1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/cho3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/cho4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/cho5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/connguoi1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/connguoi2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/connguoi3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/connguoi4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/connguoi5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/dongvat2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/dongvat3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/dongvat5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/f160c4cb-cdf6-4469-892f-440ef326154a_logohq.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/gekkuga.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/hoa2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/hoa4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/hoa5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/hoathinh1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/hoathinh2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/lizardon.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/meo1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/meo3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/meo4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/meo5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/one voice.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/react-custom-hook.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/thiennhien1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/thiennhien4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/vutru1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/vutru2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/vutru3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/vutru4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/vutru5.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/images/xe2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/login.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/register.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/register.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/search.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/search.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demoProject/src/main/webapp/shop.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/demoProject/src/main/webapp/shop.jsp" afterDir="false" />
-    </list>
+    <list default="true" id="c175763e-6712-4704-8673-df0f362b9a7f" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -101,7 +31,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "vietanhh",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/ATBM_ProjectCK/demoProject/src/main/webapp",
+    "last_opened_file_path": "C:/ATBM_ProjectCK/demoProject",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -134,6 +64,7 @@
       <updated>1735154448167</updated>
       <workItem from="1735154449289" duration="216000" />
       <workItem from="1735154698123" duration="361000" />
+      <workItem from="1735158550147" duration="12000" />
     </task>
     <servers />
   </component>
