@@ -63,7 +63,7 @@
     <!-- partial:partials/_sidebar.html -->
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-            <a class="sidebar-brand brand-logo" href="./admin"><h1 class="logo text-decoration-none">Nhóm 26</h1></a>
+            <a class="sidebar-brand brand-logo" href="./admin"><h1 class="logo text-decoration-none">Nhóm 63</h1></a>
             <a class="sidebar-brand brand-logo-mini" href="./admin"><img src="assets/images/logo-mini.svg" alt="logo"/></a>
         </div>
         <ul class="nav">
@@ -213,7 +213,7 @@
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar p-0 fixed-top d-flex flex-row">
             <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo-mini" href="./admin"><h3>Nhóm 26</h3></a>
+                <a class="navbar-brand brand-logo-mini" href="./admin"><h3>Nhóm 63</h3></a>
             </div>
             <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">

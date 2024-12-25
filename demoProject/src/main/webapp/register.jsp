@@ -28,7 +28,7 @@
     String invalidateConfimPassword = (String) request.getAttribute("invalidateConfimPassword") == null ? "" : (String) request.getAttribute("invalidateConfimPassword");
 %>
 <div class="inner">
-    <h1 class="logo">Nhóm 26</h1>
+    <h1 class="logo">Nhóm 63</h1>
     <h3 class="title">Đăng kí</h3>
     <form action="./register" method="post" class="form" id="form">
         <div class="form-group">

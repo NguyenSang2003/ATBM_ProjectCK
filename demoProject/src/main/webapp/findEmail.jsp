@@ -18,7 +18,7 @@
     String emailNotFound = request.getAttribute("email-not-found")== null ? "" :(String) request.getAttribute("email-not-found");
 %>
 <div class="inner-forgot">
-    <h1 class="logo">Nhóm 26</h1>
+    <h1 class="logo">Nhóm 63</h1>
     <h3 class="title">Tìm kiếm email</h3>
     <form action="./findemail" method="post" class="form" id="form">
         <div class="form-group">

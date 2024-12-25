@@ -26,7 +26,7 @@
 
 %>
 <div class="inner-forgot">
-    <h1 class="logo">Nhóm 26</h1>
+    <h1 class="logo">Nhóm 63</h1>
     <h3 class="title">Đặt lại mật khẩu</h3>
     <p class="description" style="line-height: 1.6">Chúng tôi đã gửi mã xác thực cho bạn. Vui lòng kiểm tra và điền vào trường phía dưới</p>
     <form action="./forgot" method="post" class="form" id="form">
